@@ -1,63 +1,33 @@
 package br.com.ericksprengel.android.baking.data;
 
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.ForeignKey;
+import android.arch.persistence.room.PrimaryKey;
+
 import com.google.gson.annotations.SerializedName;
 
+@Entity(foreignKeys = @ForeignKey(
+        entity = Recipe.class,
+        parentColumns = "id",
+        childColumns = "id"))
 public class Step {
 
+    @PrimaryKey
+    @SerializedName("id")
+    public int id;
+
     @SerializedName("videoURL")
-    private String videoURL;
+    public String videoURL;
 
     @SerializedName("description")
-    private String description;
-
-    @SerializedName("id")
-    private int id;
+    public String description;
 
     @SerializedName("shortDescription")
-    private String shortDescription;
+    public String shortDescription;
 
     @SerializedName("thumbnailURL")
-    private String thumbnailURL;
-
-    public void setVideoURL(String videoURL){
-        this.videoURL = videoURL;
-    }
-
-    public String getVideoURL(){
-        return videoURL;
-    }
-
-    public void setDescription(String description){
-        this.description = description;
-    }
-
-    public String getDescription(){
-        return description;
-    }
-
-    public void setId(int id){
-        this.id = id;
-    }
-
-    public int getId(){
-        return id;
-    }
-
-    public void setShortDescription(String shortDescription){
-        this.shortDescription = shortDescription;
-    }
-
-    public String getShortDescription(){
-        return shortDescription;
-    }
-
-    public void setThumbnailURL(String thumbnailURL){
-        this.thumbnailURL = thumbnailURL;
-    }
-
-    public String getThumbnailURL(){
-        return thumbnailURL;
-    }
+    public String thumbnailURL;
 
     @Override
      public String toString(){

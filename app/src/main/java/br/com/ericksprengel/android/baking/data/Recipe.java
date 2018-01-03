@@ -1,76 +1,38 @@
 package br.com.ericksprengel.android.baking.data;
 
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Embedded;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+import android.arch.persistence.room.Relation;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
+@Entity
 public class Recipe {
 
-    @SerializedName("image") 
-    private String image;
+    @PrimaryKey
+    @SerializedName("id")
+    public int id;
+
+    @SerializedName("image")
+    public String image;
 
     @SerializedName("servings")
-    private int servings;
+    public int servings;
 
     @SerializedName("name")
-    private String name;
+    public String name;
 
+    @Embedded
     @SerializedName("ingredients")
-    private List<Ingredient> ingredients;
+    public List<Ingredient> ingredients;
 
-    @SerializedName("id")
-    private int id;
-
+    @Embedded
     @SerializedName("steps")
-    private List<Step> steps;
-
-    public void setImage(String image){
-        this.image = image;
-    }
-
-    public String getImage(){
-        return image;
-    }
-
-    public void setServings(int servings){
-        this.servings = servings;
-    }
-
-    public int getServings(){
-        return servings;
-    }
-
-    public void setName(String name){
-        this.name = name;
-    }
-
-    public String getName(){
-        return name;
-    }
-
-    public void setIngredients(List<Ingredient> ingredients){
-        this.ingredients = ingredients;
-    }
-
-    public List<Ingredient> getIngredients(){
-        return ingredients;
-    }
-
-    public void setId(int id){
-        this.id = id;
-    }
-
-    public int getId(){
-        return id;
-    }
-
-    public void setSteps(List<Step> steps){
-        this.steps = steps;
-    }
-
-    public List<Step> getSteps(){
-        return steps;
-    }
+    public List<Step> steps;
 
     @Override
      public String toString(){

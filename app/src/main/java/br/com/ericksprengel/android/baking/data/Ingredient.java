@@ -1,41 +1,25 @@
 package br.com.ericksprengel.android.baking.data;
 
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+
 import com.google.gson.annotations.SerializedName;
 
+@Entity
 public class Ingredient {
 
+    @PrimaryKey
+    public int id;
+
     @SerializedName("quantity")
-    private int quantity;
+    public int quantity;
 
     @SerializedName("measure")
-    private String measure;
+    public String measure;
 
     @SerializedName("ingredient")
-    private String ingredient;
-
-    public void setQuantity(int quantity){
-        this.quantity = quantity;
-    }
-
-    public int getQuantity(){
-        return quantity;
-    }
-
-    public void setMeasure(String measure){
-        this.measure = measure;
-    }
-
-    public String getMeasure(){
-        return measure;
-    }
-
-    public void setIngredient(String ingredient){
-        this.ingredient = ingredient;
-    }
-
-    public String getIngredient(){
-        return ingredient;
-    }
+    public String ingredient;
 
     @Override
      public String toString(){
