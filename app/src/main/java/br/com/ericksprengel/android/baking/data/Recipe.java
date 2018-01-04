@@ -3,6 +3,7 @@ package br.com.ericksprengel.android.baking.data;
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Embedded;
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.arch.persistence.room.Relation;
 
@@ -15,24 +16,73 @@ public class Recipe {
 
     @PrimaryKey
     @SerializedName("id")
-    public int id;
+    private int id;
 
     @SerializedName("image")
-    public String image;
+    private String image;
 
     @SerializedName("servings")
-    public int servings;
+    private int servings;
 
     @SerializedName("name")
-    public String name;
+    private String name;
 
-    @Embedded
+    @Ignore
     @SerializedName("ingredients")
-    public List<Ingredient> ingredients;
+    private List<Ingredient> ingredients;
 
-    @Embedded
+    @Ignore
     @SerializedName("steps")
-    public List<Step> steps;
+    private List<Step> steps;
+
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public int getServings() {
+        return servings;
+    }
+
+    public void setServings(int servings) {
+        this.servings = servings;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public List<Ingredient> getIngredients() {
+        return ingredients;
+    }
+
+    public void setIngredients(List<Ingredient> ingredients) {
+        this.ingredients = ingredients;
+    }
+
+    public List<Step> getSteps() {
+        return steps;
+    }
+
+    public void setSteps(List<Step> steps) {
+        this.steps = steps;
+    }
 
     @Override
      public String toString(){
