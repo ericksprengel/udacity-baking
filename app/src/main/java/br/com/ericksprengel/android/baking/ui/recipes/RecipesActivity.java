@@ -19,6 +19,8 @@ import br.com.ericksprengel.android.baking.data.source.local.RecipesLocalDataSou
 import br.com.ericksprengel.android.baking.data.source.remote.BakingServicesBuilder;
 import br.com.ericksprengel.android.baking.data.source.remote.RecipesRemoteDataSource;
 import br.com.ericksprengel.android.baking.ui.BaseActivity;
+import br.com.ericksprengel.android.baking.ui.recipe.RecipeItemDetailActivity;
+import br.com.ericksprengel.android.baking.ui.recipe.RecipeItemListActivity;
 import br.com.ericksprengel.android.baking.util.AppExecutors;
 
 public class RecipesActivity extends BaseActivity implements View.OnClickListener, RecipesAdapter.OnRecipeClickListener {
@@ -95,6 +97,7 @@ public class RecipesActivity extends BaseActivity implements View.OnClickListene
     @Override
     public void onRecipeClick(Recipe recipe) {
         Toast.makeText(this, recipe.getName(), Toast.LENGTH_LONG).show();
+        startActivity(RecipeItemListActivity.getStartIntent(this, recipe));
     }
 
     @Override

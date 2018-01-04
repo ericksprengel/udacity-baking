@@ -35,6 +35,24 @@
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".ui.recipe.RecipeItemListActivity"
+            android:label="@string/title_recipeitem_list"
+            android:parentActivityName=".ui.recipes.RecipesActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="br.com.ericksprengel.android.baking.ui.recipes.RecipesActivity" />
+        </activity>
+        <activity
+            android:name=".ui.recipe.RecipeItemDetailActivity"
+            android:label="@string/title_recipeitem_detail"
+            android:parentActivityName=".ui.recipe.RecipeItemListActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="br.com.ericksprengel.android.baking.ui.recipe.RecipeItemListActivity" />
+        </activity>
     </application>
 
 </manifest>

@@ -1,6 +1,6 @@
 <resources>
 
-    <string translatable="false" name="baking_api_base_url">https://d17h27t6h515a5.cloudfront.net/</string>
+    <string name="baking_api_base_url" translatable="false">https://d17h27t6h515a5.cloudfront.net/</string>
 
     <!-- Common strings -->
     <string name="app_name">Baking</string>
@@ -14,5 +14,7 @@
 
     <!-- Remote Services messages-->
     <string name="remote_services_request_error_get_recipes">"Recipes couldn't be loaded."</string>
+    <string name="title_recipeitem_list">RecipeItems</string>
+    <string name="title_recipeitem_detail">RecipeItem Detail</string>
 
 </resources>
