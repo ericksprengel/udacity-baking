@@ -56,7 +56,7 @@ public class RecipesRemoteDataSource implements RecipesDataSource {
 
 
     @Override
-    public void getRecipes(@NonNull final LoadRecipesCallback callback) {
+    public boolean getRecipes(@NonNull final LoadRecipesCallback callback) {
         Call call = mBakingServices.getRecipes();
         call.enqueue(new Callback<List<Recipe>>() {
             @Override
@@ -82,6 +82,7 @@ public class RecipesRemoteDataSource implements RecipesDataSource {
             }
 
         });
+        return false;
     }
 
     @Override

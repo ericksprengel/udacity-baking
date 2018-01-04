@@ -41,7 +41,7 @@ public interface RecipesDataSource {
         void onDataNotAvailable();
     }
 
-    void getRecipes(@NonNull LoadRecipesCallback callback);
+    boolean getRecipes(@NonNull LoadRecipesCallback callback);
 
     void getRecipe(int recipeId, @NonNull LoadRecipeCallback callback);
 

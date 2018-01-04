@@ -62,7 +62,7 @@ public class RecipesLocalDataSource implements RecipesDataSource {
      * or the table is empty.
      */
     @Override
-    public void getRecipes(@NonNull final LoadRecipesCallback callback) {
+    public boolean getRecipes(@NonNull final LoadRecipesCallback callback) {
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
@@ -82,6 +82,7 @@ public class RecipesLocalDataSource implements RecipesDataSource {
         };
 
         mAppExecutors.diskIO().execute(runnable);
+        return false;
     }
 
     /**

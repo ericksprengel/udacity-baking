@@ -89,13 +89,13 @@ public class RecipesRepository implements RecipesDataSource {
      * get the data.
      */
     @Override
-    public void getRecipes(@NonNull final LoadRecipesCallback callback) {
+    public boolean getRecipes(@NonNull final LoadRecipesCallback callback) {
         checkNotNull(callback);
 
         // Respond immediately with cache if available and not dirty
         if (mCachedRecipes != null && !mCacheIsDirty) {
             callback.onRecipesLoaded(new ArrayList<>(mCachedRecipes.values()));
-            return;
+            return true;
         }
 
         if (mCacheIsDirty) {
@@ -116,6 +116,7 @@ public class RecipesRepository implements RecipesDataSource {
                 }
             });
         }
+        return false;
     }
 
     @Override
