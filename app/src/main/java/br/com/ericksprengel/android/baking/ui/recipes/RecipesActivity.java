@@ -1,4 +1,4 @@
-package br.com.ericksprengel.android.baking;
+package br.com.ericksprengel.android.baking.ui.recipes;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -8,6 +8,7 @@ import android.widget.Toast;
 
 import java.util.List;
 
+import br.com.ericksprengel.android.baking.R;
 import br.com.ericksprengel.android.baking.data.Recipe;
 import br.com.ericksprengel.android.baking.data.source.RecipesDataSource;
 import br.com.ericksprengel.android.baking.data.source.RecipesRepository;
