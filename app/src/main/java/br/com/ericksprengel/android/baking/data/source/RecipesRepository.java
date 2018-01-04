@@ -85,7 +85,7 @@ public class RecipesRepository implements RecipesDataSource {
      * Gets recipes from cache or remote data source, whichever is
      * available first.
      * <p>
-     * Note: {@link LoadRecipesCallback#onDataNotAvailable()} is fired if all data sources fail to
+     * Note: {@link LoadRecipesCallback#onDataNotAvailable(int errorCode, String errorMessage)} is fired if all data sources fail to
      * get the data.
      */
     @Override
@@ -111,7 +111,7 @@ public class RecipesRepository implements RecipesDataSource {
                 }
 
                 @Override
-                public void onDataNotAvailable() {
+                public void onDataNotAvailable(int errorCode, String errorMessage) {
                     getRecipesFromRemoteDataSource(callback);
                 }
             });
@@ -195,8 +195,8 @@ public class RecipesRepository implements RecipesDataSource {
             }
 
             @Override
-            public void onDataNotAvailable() {
-                callback.onDataNotAvailable();
+            public void onDataNotAvailable(int errorCode, String errorMessage) {
+                callback.onDataNotAvailable(errorCode, errorMessage);
             }
         });
     }

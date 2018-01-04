@@ -31,7 +31,7 @@ public interface RecipesDataSource {
 
         void onRecipesLoaded(List<Recipe> recipes);
 
-        void onDataNotAvailable();
+        void onDataNotAvailable(int errorCode, String errorMessage);
     }
 
     interface LoadRecipeCallback {

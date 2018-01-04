@@ -58,7 +58,7 @@ public class RecipesLocalDataSource implements RecipesDataSource {
     }
 
     /**
-     * Note: {@link LoadRecipesCallback#onDataNotAvailable()} is fired if the database doesn't exist
+     * Note: {@link LoadRecipesCallback#onDataNotAvailable(int errorCode, String errorMessage)} is fired if the database doesn't exist
      * or the table is empty.
      */
     @Override
@@ -72,7 +72,7 @@ public class RecipesLocalDataSource implements RecipesDataSource {
                     public void run() {
                         if (recipes.isEmpty()) {
                             // This will be called if the table is new or just empty.
-                            callback.onDataNotAvailable();
+                            callback.onDataNotAvailable(-1, null);
                         } else {
                             callback.onRecipesLoaded(recipes);
                         }

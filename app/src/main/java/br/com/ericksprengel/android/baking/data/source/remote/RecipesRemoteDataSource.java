@@ -16,10 +16,17 @@
 
 package br.com.ericksprengel.android.baking.data.source.remote;
 
+import android.content.res.Resources;
 import android.support.annotation.NonNull;
 
+import java.util.List;
+
+import br.com.ericksprengel.android.baking.R;
 import br.com.ericksprengel.android.baking.data.Recipe;
 import br.com.ericksprengel.android.baking.data.source.RecipesDataSource;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Implementation of the data source that adds a latency simulating network.
@@ -28,41 +35,72 @@ public class RecipesRemoteDataSource implements RecipesDataSource {
 
     private static RecipesRemoteDataSource INSTANCE;
 
-    private static final int SERVICE_LATENCY_IN_MILLIS = 2000;
+    private static final int ERROR_CODE_DEFAULT = 1000;
+    private static final int SERVICE_LATENCY_IN_MILLIS = 2000; // used to simulate network delay
 
-    public static RecipesRemoteDataSource getInstance() {
+    private final Resources mResources;
+    private final BakingServices mBakingServices;
+
+    public static RecipesRemoteDataSource getInstance(BakingServices bakingServices, Resources resources) {
         if (INSTANCE == null) {
-            INSTANCE = new RecipesRemoteDataSource();
+            INSTANCE = new RecipesRemoteDataSource(bakingServices, resources);
         }
         return INSTANCE;
     }
 
     // Prevent direct instantiation.
-    private RecipesRemoteDataSource() {}
+    private RecipesRemoteDataSource(BakingServices bakingServices, Resources resources) {
+        mBakingServices = bakingServices;
+        mResources = resources;
+    }
 
 
     @Override
-    public void getRecipes(@NonNull LoadRecipesCallback callback) {
+    public void getRecipes(@NonNull final LoadRecipesCallback callback) {
+        Call call = mBakingServices.getRecipes();
+        call.enqueue(new Callback<List<Recipe>>() {
+            @Override
+            public void onResponse(@NonNull Call<List<Recipe>> call, @NonNull Response<List<Recipe>> response) {
+                if(response.isSuccessful()) {
+                    List<Recipe> recipes = (List<Recipe>) response.body();
+                    if(recipes == null) {
+                        callback.onDataNotAvailable(ERROR_CODE_DEFAULT,
+                                mResources.getString(R.string.remote_services_request_error_get_recipes));
+                        return;
+                    }
+                    callback.onRecipesLoaded(recipes);
+                } else {
+                    callback.onDataNotAvailable(response.code(),
+                            mResources.getString(R.string.remote_services_request_error_get_recipes));
+                }
+            }
 
+            @Override
+            public void onFailure(@NonNull Call<List<Recipe>> call, @NonNull Throwable t) {
+                callback.onDataNotAvailable(ERROR_CODE_DEFAULT,
+                        mResources.getString(R.string.connection_error));
+            }
+
+        });
     }
 
     @Override
     public void getRecipe(int recipeId, @NonNull LoadRecipeCallback callback) {
-
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void saveRecipe(@NonNull Recipe recipe) {
-
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void refreshRecipes() {
-
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void deleteAllRecipes() {
-
+        throw new UnsupportedOperationException();
     }
 }

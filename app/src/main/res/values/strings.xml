@@ -2,8 +2,17 @@
 
     <string translatable="false" name="baking_api_base_url">https://d17h27t6h515a5.cloudfront.net/</string>
 
+    <!-- Common strings -->
     <string name="app_name">Baking</string>
+    <string name="retry">Retry</string>
+    <string name="connection_error">"Check your connection and try again."</string>
+
+    <!-- Recipes Widget -->
     <string name="appwidget_text">EXAMPLE</string>
     <string name="configure">Configure</string>
     <string name="add_widget">Add widget</string>
+
+    <!-- Remote Services messages-->
+    <string name="remote_services_request_error_get_recipes">"Recipes couldn't be loaded."</string>
+
 </resources>

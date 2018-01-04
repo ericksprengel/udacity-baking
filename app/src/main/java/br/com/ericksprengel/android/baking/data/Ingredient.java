@@ -13,7 +13,7 @@ public class Ingredient {
     public int id;
 
     @SerializedName("quantity")
-    public int quantity;
+    public float quantity;
 
     @SerializedName("measure")
     public String measure;

@@ -25,3 +25,8 @@ allprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+
+task clearAppData(type: Exec) {
+    def clearDataCommand = ['adb', 'shell', 'pm', 'clear', 'br.com.ericksprengel.android.baking']
+    commandLine clearDataCommand
+}
