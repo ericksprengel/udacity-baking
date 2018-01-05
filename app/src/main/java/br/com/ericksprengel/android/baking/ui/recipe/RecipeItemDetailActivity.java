@@ -13,7 +13,10 @@ import android.view.MenuItem;
 
 import br.com.ericksprengel.android.baking.R;
 import br.com.ericksprengel.android.baking.data.Recipe;
+import br.com.ericksprengel.android.baking.data.Step;
 import br.com.ericksprengel.android.baking.ui.BaseActivity;
+
+import static br.com.ericksprengel.android.baking.ui.recipe.RecipeItemDetailFragment.ARG_STEP_ID;
 
 /**
  * An activity representing a single RecipeItem detail screen. This
@@ -22,6 +25,12 @@ import br.com.ericksprengel.android.baking.ui.BaseActivity;
  * in a {@link RecipeItemListActivity}.
  */
 public class RecipeItemDetailActivity extends BaseActivity {
+
+    public static Intent getStartIntent(Context context, Step step) {
+        Intent intent = new Intent(context, RecipeItemListActivity.class);
+        intent.putExtra(ARG_STEP_ID, step.getId());
+        return intent;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,11 +66,8 @@ public class RecipeItemDetailActivity extends BaseActivity {
         if (savedInstanceState == null) {
             // Create the detail fragment and add it to the activity
             // using a fragment transaction.
-            Bundle arguments = new Bundle();
-            arguments.putString(RecipeItemDetailFragment.ARG_ITEM_ID,
-                    getIntent().getStringExtra(RecipeItemDetailFragment.ARG_ITEM_ID));
-            RecipeItemDetailFragment fragment = new RecipeItemDetailFragment();
-            fragment.setArguments(arguments);
+            int stepId = getIntent().getIntExtra(ARG_STEP_ID, -1);
+            RecipeItemDetailFragment fragment = RecipeItemDetailFragment.newInstance(stepId);
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.recipeitem_detail_container, fragment)
                     .commit();

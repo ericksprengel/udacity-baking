@@ -22,6 +22,7 @@ import br.com.ericksprengel.android.baking.ui.BaseActivity;
 import br.com.ericksprengel.android.baking.ui.recipe.RecipeItemDetailActivity;
 import br.com.ericksprengel.android.baking.ui.recipe.RecipeItemListActivity;
 import br.com.ericksprengel.android.baking.util.AppExecutors;
+import br.com.ericksprengel.android.baking.util.Inject;
 
 public class RecipesActivity extends BaseActivity implements View.OnClickListener, RecipesAdapter.OnRecipeClickListener {
 
@@ -37,10 +38,7 @@ public class RecipesActivity extends BaseActivity implements View.OnClickListene
         initBaseActivity();
         setOnErrorClickListener(this);
 
-        BakingDatabase database = BakingDatabase.getInstance(this);
-        mRecipesRepository = RecipesRepository.getInstance(
-                RecipesRemoteDataSource.getInstance(BakingServicesBuilder.build(getApplicationContext()), getResources()),
-                RecipesLocalDataSource.getInstance(new AppExecutors(), database.recipeDao()));
+        mRecipesRepository = Inject.getRecipeRepository(this);
 
         // Add swipe to refresh event
         mSwipeRefreshLayout = findViewById(R.id.recipes_ac_swiperefreshlayout);

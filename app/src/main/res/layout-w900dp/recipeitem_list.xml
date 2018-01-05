@@ -27,7 +27,7 @@
         android:layout_marginRight="16dp"
         app:layoutManager="LinearLayoutManager"
         tools:context="br.com.ericksprengel.android.baking.ui.recipe.RecipeItemListActivity"
-        tools:listitem="@layout/recipeitem_list_content" />
+        tools:listitem="@layout/activity_recipe_steps_item" />
 
     <FrameLayout
         android:id="@+id/recipeitem_detail_container"

@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import br.com.ericksprengel.android.baking.R;
+import br.com.ericksprengel.android.baking.data.Step;
+import br.com.ericksprengel.android.baking.data.source.RecipesRepository;
 import br.com.ericksprengel.android.baking.ui.recipe.dummy.DummyContent;
 
 /**
@@ -20,15 +22,15 @@ import br.com.ericksprengel.android.baking.ui.recipe.dummy.DummyContent;
  */
 public class RecipeItemDetailFragment extends Fragment {
     /**
-     * The fragment argument representing the item ID that this fragment
+     * The fragment argument representing the step ID that this fragment
      * represents.
      */
-    public static final String ARG_ITEM_ID = "item_id";
+    public static final String ARG_STEP_ID = "step_id";
 
     /**
-     * The dummy content this fragment is presenting.
+     * The step content this fragment is presenting.
      */
-    private DummyContent.DummyItem mItem;
+    private Step mStep;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -37,34 +39,30 @@ public class RecipeItemDetailFragment extends Fragment {
     public RecipeItemDetailFragment() {
     }
 
+    public static RecipeItemDetailFragment newInstance(int stepId) {
+        RecipeItemDetailFragment fragment = new RecipeItemDetailFragment();
+
+        Bundle args = new Bundle();
+        args.putInt(ARG_STEP_ID, stepId);
+        fragment.setArguments(args);
+
+        return fragment;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (getArguments().containsKey(ARG_ITEM_ID)) {
-            // Load the dummy content specified by the fragment
-            // arguments. In a real-world scenario, use a Loader
-            // to load content from a content provider.
-            mItem = DummyContent.ITEM_MAP.get(getArguments().getString(ARG_ITEM_ID));
-
-            Activity activity = this.getActivity();
-            CollapsingToolbarLayout appBarLayout = activity.findViewById(R.id.toolbar_layout);
-            if (appBarLayout != null) {
-                appBarLayout.setTitle(mItem.content);
-            }
-        }
+        int stepId = getArguments().getInt(ARG_STEP_ID);
+        //RecipesRepository mRepository = null;
+        //mRepository.getStep(stepId, this);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.recipeitem_detail, container, false);
-
-        // Show the dummy content as text in a TextView.
-        if (mItem != null) {
-            ((TextView) rootView.findViewById(R.id.recipeitem_detail)).setText(mItem.details);
-        }
-
+        ((TextView) rootView.findViewById(R.id.recipeitem_detail)).setText("TODO");
         return rootView;
     }
 }

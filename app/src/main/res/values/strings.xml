@@ -6,6 +6,7 @@
     <string name="app_name">Baking</string>
     <string name="retry">Retry</string>
     <string name="connection_error">"Check your connection and try again."</string>
+    <string name="internal_error">"Sorry. Something goes wrong."</string>
 
     <!-- Recipes Widget -->
     <string name="appwidget_text">EXAMPLE</string>
