@@ -33,7 +33,8 @@ public abstract class BakingDatabase extends RoomDatabase {
 
     private static BakingDatabase INSTANCE;
 
-    public abstract RecipesDao recipeDao();
+    public abstract RecipesDao recipesDao();
+    public abstract StepsDao stepsDao();
 
     private static final Object sLock = new Object();
 
@@ -42,6 +43,7 @@ public abstract class BakingDatabase extends RoomDatabase {
             if (INSTANCE == null) {
                 INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                         BakingDatabase.class, "Baking.db")
+                        .fallbackToDestructiveMigration() //TODO: remove it before release
                         .build();
             }
             return INSTANCE;

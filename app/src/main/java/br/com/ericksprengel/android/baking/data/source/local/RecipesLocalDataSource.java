@@ -21,6 +21,7 @@ import android.support.annotation.NonNull;
 import java.util.List;
 
 import br.com.ericksprengel.android.baking.data.Recipe;
+import br.com.ericksprengel.android.baking.data.Step;
 import br.com.ericksprengel.android.baking.data.source.RecipesDataSource;
 import br.com.ericksprengel.android.baking.util.AppExecutors;
 
@@ -35,22 +36,26 @@ public class RecipesLocalDataSource implements RecipesDataSource {
     private static volatile RecipesLocalDataSource INSTANCE;
 
     private RecipesDao mRecipesDao;
+    private StepsDao mStepsDao;
 
     private AppExecutors mAppExecutors;
 
     // Prevent direct instantiation.
     private RecipesLocalDataSource(@NonNull AppExecutors appExecutors,
-                                   @NonNull RecipesDao recipesDao) {
+                                   @NonNull RecipesDao recipesDao,
+                                   @NonNull StepsDao stepsDao) {
         mAppExecutors = appExecutors;
         mRecipesDao = recipesDao;
+        mStepsDao = stepsDao;
     }
 
     public static RecipesLocalDataSource getInstance(@NonNull AppExecutors appExecutors,
-                                                     @NonNull RecipesDao recipesDao) {
+                                                     @NonNull RecipesDao recipesDao,
+                                                     @NonNull StepsDao stepsDao) {
         if (INSTANCE == null) {
             synchronized (RecipesLocalDataSource.class) {
                 if (INSTANCE == null) {
-                    INSTANCE = new RecipesLocalDataSource(appExecutors, recipesDao);
+                    INSTANCE = new RecipesLocalDataSource(appExecutors, recipesDao, stepsDao);
                 }
             }
         }
@@ -119,6 +124,11 @@ public class RecipesLocalDataSource implements RecipesDataSource {
             @Override
             public void run() {
                 mRecipesDao.insertRecipe(recipe);
+                // recipe id is empty if it comes from remote.
+                for(Step step : recipe.getSteps()) {
+                    step.setRecipeId(recipe.getId());
+                }
+                mStepsDao.insertAll(recipe.getSteps());
             }
         };
         mAppExecutors.diskIO().execute(saveRunnable);
@@ -142,4 +152,9 @@ public class RecipesLocalDataSource implements RecipesDataSource {
         mAppExecutors.diskIO().execute(deleteRunnable);
     }
 
+    @Override
+    public void getSteps(LoadStepsCallback callback) {
+        //TODO
+        throw new UnsupportedOperationException();
+    }
 }

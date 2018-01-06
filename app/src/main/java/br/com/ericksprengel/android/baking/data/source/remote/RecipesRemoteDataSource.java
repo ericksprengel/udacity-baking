@@ -104,4 +104,10 @@ public class RecipesRemoteDataSource implements RecipesDataSource {
     public void deleteAllRecipes() {
         throw new UnsupportedOperationException();
     }
+
+    @Override
+    public void getSteps(@NonNull LoadStepsCallback callback) {
+        //TODO
+        throw new UnsupportedOperationException();
+    }
 }

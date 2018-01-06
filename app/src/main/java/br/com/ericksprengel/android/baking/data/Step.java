@@ -1,33 +1,38 @@
 package br.com.ericksprengel.android.baking.data;
 
-import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.PrimaryKey;
 
 import com.google.gson.annotations.SerializedName;
 
-@Entity(foreignKeys = @ForeignKey(
-        entity = Recipe.class,
-        parentColumns = "id",
-        childColumns = "id"))
+@Entity(tableName = "steps",
+        primaryKeys = {"id", "recipeId"},
+        foreignKeys = {
+            @ForeignKey(
+                entity = Recipe.class,
+                parentColumns = "id",
+                childColumns = "recipeId",
+                onDelete = ForeignKey.CASCADE)
+        })
 public class Step {
 
-    @PrimaryKey
     @SerializedName("id")
-    public int id;
+    int id;
 
     @SerializedName("videoURL")
-    public String videoURL;
+    String videoURL;
 
     @SerializedName("description")
-    public String description;
+    String description;
 
     @SerializedName("shortDescription")
-    public String shortDescription;
+    String shortDescription;
 
     @SerializedName("thumbnailURL")
-    public String thumbnailURL;
+    String thumbnailURL;
+
+    int recipeId;
 
     public int getId() {
         return id;
@@ -67,6 +72,14 @@ public class Step {
 
     public void setThumbnailURL(String thumbnailURL) {
         this.thumbnailURL = thumbnailURL;
+    }
+
+    public int getRecipeId() {
+        return recipeId;
+    }
+
+    public void setRecipeId(int recipeId) {
+        this.recipeId = recipeId;
     }
 
     @Override

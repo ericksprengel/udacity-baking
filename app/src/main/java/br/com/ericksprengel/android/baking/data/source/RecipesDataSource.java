@@ -21,6 +21,7 @@ import android.support.annotation.NonNull;
 import java.util.List;
 
 import br.com.ericksprengel.android.baking.data.Recipe;
+import br.com.ericksprengel.android.baking.data.Step;
 
 /**
  * Main entry point for accessing recipes data.
@@ -50,4 +51,17 @@ public interface RecipesDataSource {
     void refreshRecipes();
 
     void deleteAllRecipes();
+
+    /*
+     * RECIPE STEPS
+     */
+
+    interface LoadStepsCallback {
+
+        void onStepsLoaded(List<Step> steps);
+
+        void onDataNotAvailable();
+    }
+
+    void getSteps(@NonNull LoadStepsCallback callback);
 }

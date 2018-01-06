@@ -17,6 +17,7 @@
 package br.com.ericksprengel.android.baking.data.source.local;
 
 import android.arch.persistence.room.Dao;
+import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
@@ -24,26 +25,21 @@ import android.arch.persistence.room.Query;
 import java.util.List;
 
 import br.com.ericksprengel.android.baking.data.Recipe;
+import br.com.ericksprengel.android.baking.data.Step;
 
 /**
  * Data Access Object for the recipes table.
  */
-@Dao
-public interface RecipesDao {
+@Dao()
+public interface StepsDao {
 
-    @Query("SELECT * FROM recipes")
-    List<Recipe> getRecipes();
+    @Query("SELECT * FROM steps WHERE recipeId = :recipeId")
+    List<Step> getSteps(int recipeId);
 
-    @Query("SELECT * FROM recipes WHERE id = :recipeId")
-    Recipe getRecipeById(int recipeId);
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertAll(Recipe... recipes);
+    @Query("SELECT * FROM steps WHERE id = :id AND recipeId = :recipeId")
+    Step getStep(int recipeId, int id);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertRecipe(Recipe recipe);
-
-    @Query("DELETE FROM recipes")
-    void deleteRecipes();
+    void insertAll(List<Step> steps);
 
 }

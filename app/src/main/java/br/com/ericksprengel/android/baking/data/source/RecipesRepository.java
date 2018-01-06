@@ -186,6 +186,12 @@ public class RecipesRepository implements RecipesDataSource {
         mCachedRecipes.clear();
     }
 
+    @Override
+    public void getSteps(@NonNull LoadStepsCallback callback) {
+        //TODO
+        new UnsupportedOperationException();
+    }
+
     private void getRecipesFromRemoteDataSource(@NonNull final LoadRecipesCallback callback) {
         mRecipesRemoteDataSource.getRecipes(new LoadRecipesCallback() {
             @Override

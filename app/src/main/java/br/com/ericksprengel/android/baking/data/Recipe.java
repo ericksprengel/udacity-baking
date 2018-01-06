@@ -11,7 +11,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-@Entity
+@Entity(tableName = "recipes")
 public class Recipe {
 
     @PrimaryKey

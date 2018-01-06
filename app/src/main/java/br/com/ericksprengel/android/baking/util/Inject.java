@@ -17,6 +17,6 @@ public class Inject {
         BakingDatabase database = BakingDatabase.getInstance(context);
         return RecipesRepository.getInstance(
                 RecipesRemoteDataSource.getInstance(BakingServicesBuilder.build(context), context.getResources()),
-                RecipesLocalDataSource.getInstance(new AppExecutors(), database.recipeDao()));
+                RecipesLocalDataSource.getInstance(new AppExecutors(), database.recipesDao(), database.stepsDao()));
     }
 }
