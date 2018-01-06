@@ -11,6 +11,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 
+import java.util.List;
+
 import br.com.ericksprengel.android.baking.R;
 import br.com.ericksprengel.android.baking.data.Recipe;
 import br.com.ericksprengel.android.baking.data.Step;
@@ -96,10 +98,10 @@ public class RecipeItemListActivity extends BaseActivity implements RecipeStepAd
 
     private void loadRecipe() {
         int recipeId = getIntent().getIntExtra(PARAM_RECIPE, -1);
-        mRecipesRepository.getRecipe(recipeId, new RecipesDataSource.LoadRecipeCallback() {
+        mRecipesRepository.getSteps(recipeId, new RecipesDataSource.LoadStepsCallback() {
             @Override
-            public void onRecipeLoaded(Recipe recipe) {
-                mAdapter.setSteps(recipe.getSteps());
+            public void onStepsLoaded(List<Step> steps) {
+                mAdapter.setSteps(steps);
             }
 
             @Override

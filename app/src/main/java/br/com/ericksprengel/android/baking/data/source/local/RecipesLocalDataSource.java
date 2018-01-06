@@ -153,8 +153,25 @@ public class RecipesLocalDataSource implements RecipesDataSource {
     }
 
     @Override
-    public void getSteps(LoadStepsCallback callback) {
-        //TODO
-        throw new UnsupportedOperationException();
+    public void getSteps(final int recipeId, final LoadStepsCallback callback) {
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                final List<Step> steps = mStepsDao.getSteps(recipeId);
+
+                mAppExecutors.mainThread().execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (steps != null) {
+                            callback.onStepsLoaded(steps);
+                        } else {
+                            callback.onDataNotAvailable();
+                        }
+                    }
+                });
+            }
+        };
+
+        mAppExecutors.diskIO().execute(runnable);
     }
 }

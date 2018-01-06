@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 
 import br.com.ericksprengel.android.baking.data.Recipe;
+import br.com.ericksprengel.android.baking.data.Step;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -43,6 +44,7 @@ public class RecipesRepository implements RecipesDataSource {
      * Cache for load Recipes in memory.
      */
     private Map<Integer, Recipe> mCachedRecipes;
+    private Map<Integer, List<Step>> mCachedStepsByRecipe;
 
     /**
      * Marks the cache as invalid, to force an update the next time data is requested.
@@ -186,12 +188,6 @@ public class RecipesRepository implements RecipesDataSource {
         mCachedRecipes.clear();
     }
 
-    @Override
-    public void getSteps(@NonNull LoadStepsCallback callback) {
-        //TODO
-        new UnsupportedOperationException();
-    }
-
     private void getRecipesFromRemoteDataSource(@NonNull final LoadRecipesCallback callback) {
         mRecipesRemoteDataSource.getRecipes(new LoadRecipesCallback() {
             @Override
@@ -228,11 +224,58 @@ public class RecipesRepository implements RecipesDataSource {
 
     @Nullable
     private Recipe getRecipeWithId(int id) {
-        checkNotNull(id);
         if (mCachedRecipes == null || mCachedRecipes.isEmpty()) {
             return null;
         } else {
             return mCachedRecipes.get(id);
+        }
+    }
+
+
+
+    /*
+     * RECIPE STEPS
+     */
+
+    @Override
+    public void getSteps(final int recipeId, @NonNull final LoadStepsCallback callback) {
+        List<Step> cachedSteps = getStepsWithRecipeId(recipeId);
+
+        // Respond immediately with cache if available
+        if (cachedSteps != null) {
+            callback.onStepsLoaded(cachedSteps);
+            return;
+        }
+
+        // Load from persisted if needed.
+
+        // Is the steps in the local data source? If not, the app data was cleared.
+        mRecipesLocalDataSource.getSteps(recipeId, new LoadStepsCallback() {
+            @Override
+            public void onStepsLoaded(List<Step> steps) {
+                // Do in memory cache update to keep the app UI up to date
+                if (mCachedStepsByRecipe == null) {
+                    mCachedStepsByRecipe = new LinkedHashMap<>();
+                }
+                mCachedStepsByRecipe.put(recipeId, steps);
+
+                callback.onStepsLoaded(steps);
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+                // it's a invalid recipe or it was removed from cache.
+                callback.onDataNotAvailable();
+            }
+        });
+    }
+
+    @Nullable
+    private List<Step> getStepsWithRecipeId(int recipeId) {
+        if (mCachedStepsByRecipe == null || mCachedStepsByRecipe.isEmpty()) {
+            return null;
+        } else {
+            return mCachedStepsByRecipe.get(recipeId);
         }
     }
 }

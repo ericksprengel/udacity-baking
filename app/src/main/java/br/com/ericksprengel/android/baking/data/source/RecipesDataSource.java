@@ -63,5 +63,5 @@ public interface RecipesDataSource {
         void onDataNotAvailable();
     }
 
-    void getSteps(@NonNull LoadStepsCallback callback);
+    void getSteps(int recipeId, @NonNull LoadStepsCallback callback);
 }
