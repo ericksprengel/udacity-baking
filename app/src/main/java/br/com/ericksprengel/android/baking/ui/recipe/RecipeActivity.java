@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -31,7 +32,7 @@ import static android.support.v4.app.NavUtils.navigateUpFromSameTask;
  * item details. On tablets, the activity presents the list of items and
  * item details side-by-side using two vertical panes.
  */
-public class RecipeActivity extends BaseActivity implements StepAdapter.OnStepClickListener {
+public class RecipeActivity extends AppCompatActivity implements StepAdapter.OnStepClickListener {
 
 
     final private static String LOG_TAG = "RecipeActivity";
@@ -47,6 +48,7 @@ public class RecipeActivity extends BaseActivity implements StepAdapter.OnStepCl
     // TODO: It should be injected.
     private RecipesRepository mRecipesRepository;
     private StepAdapter mAdapter;
+    private RecyclerView mRecyclerView;
 
 
     public static Intent getStartIntent(Context context, Recipe recipe) {
@@ -88,9 +90,9 @@ public class RecipeActivity extends BaseActivity implements StepAdapter.OnStepCl
             mTwoPane = true;
         }
 
-        RecyclerView recyclerView = findViewById(R.id.recipe_ac_step_list);
+        mRecyclerView = findViewById(R.id.recipe_ac_step_list);
         mAdapter = new StepAdapter(this);
-        recyclerView.setAdapter(mAdapter);
+        mRecyclerView.setAdapter(mAdapter);
 
         loadRecipe();
     }
@@ -105,7 +107,7 @@ public class RecipeActivity extends BaseActivity implements StepAdapter.OnStepCl
 
             @Override
             public void onDataNotAvailable() {
-                showError(getString(R.string.internal_error));
+                Snackbar.make(mRecyclerView, getString(R.string.internal_error), Snackbar.LENGTH_LONG).show();
             }
         });
     }
@@ -130,8 +132,7 @@ public class RecipeActivity extends BaseActivity implements StepAdapter.OnStepCl
     @Override
     public void onStepClick(Step step) {
         if (mTwoPane) {
-            Bundle arguments = new Bundle();
-            StepFragment fragment = StepFragment.newInstance(step.getId());
+            StepFragment fragment = StepFragment.newInstance(step.getRecipeId(), step.getId());
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.recipe_ac_recipeitem_detail_container, fragment)
                     .commit();

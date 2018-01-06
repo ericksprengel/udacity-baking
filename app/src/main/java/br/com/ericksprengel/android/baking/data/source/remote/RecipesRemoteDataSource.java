@@ -109,4 +109,9 @@ public class RecipesRemoteDataSource implements RecipesDataSource {
     public void getSteps(int recipeId, @NonNull LoadStepsCallback callback) {
         throw new UnsupportedOperationException();
     }
+
+    @Override
+    public void getStep(int recipeId, int stepId, @NonNull LoadStepCallback callback) {
+        throw new UnsupportedOperationException();
+    }
 }

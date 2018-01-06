@@ -45,6 +45,7 @@ public class RecipesRepository implements RecipesDataSource {
      */
     private Map<Integer, Recipe> mCachedRecipes;
     private Map<Integer, List<Step>> mCachedStepsByRecipe;
+    private Map<Integer, Map<Integer, Step>> mCachedSteps; // step primary key is recipeId and stepId
 
     /**
      * Marks the cache as invalid, to force an update the next time data is requested.
@@ -270,12 +271,63 @@ public class RecipesRepository implements RecipesDataSource {
         });
     }
 
+    @Override
+    public void getStep(final int recipeId, int stepId, @NonNull final LoadStepCallback callback) {
+        Step cachedStep = getStepWithRecipeIdAndStepId(recipeId, stepId);
+
+        // Respond immediately with cache if available
+        if (cachedStep != null) {
+            callback.onStepLoaded(cachedStep);
+            return;
+        }
+
+        // Load from persisted if needed.
+
+        // Is the steps in the local data source? If not, the app data was cleared.
+        mRecipesLocalDataSource.getStep(recipeId, stepId, new LoadStepCallback() {
+            @Override
+            public void onStepLoaded(Step step) {
+                // Do in memory cache update to keep the app UI up to date
+                if (mCachedSteps == null) {
+                    mCachedSteps = new LinkedHashMap<>();
+                }
+                Map<Integer, Step> recipeSteps = mCachedSteps.get(recipeId);
+                if(recipeSteps == null) {
+                    recipeSteps = new LinkedHashMap<>();
+                    mCachedSteps.put(recipeId, recipeSteps);
+                }
+                recipeSteps.put(recipeId, step);
+
+                callback.onStepLoaded(step);
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+                // it's a invalid recipe or it was removed from cache.
+                callback.onDataNotAvailable();
+            }
+        });
+    }
+
     @Nullable
     private List<Step> getStepsWithRecipeId(int recipeId) {
-        if (mCachedStepsByRecipe == null || mCachedStepsByRecipe.isEmpty()) {
+        if (mCachedStepsByRecipe == null|| mCachedStepsByRecipe.isEmpty()) {
             return null;
         } else {
             return mCachedStepsByRecipe.get(recipeId);
         }
+    }
+
+    @Nullable
+    private Step getStepWithRecipeIdAndStepId(int recipeId, int stepId) {
+        if (mCachedSteps == null || mCachedSteps.isEmpty()) {
+            return null;
+        }
+
+        Map<Integer, Step> recipeSteps = mCachedSteps.get(recipeId);
+        if(recipeSteps == null || recipeSteps.isEmpty()) {
+            return null;
+        }
+        return recipeSteps.get(stepId);
     }
 }
