@@ -36,7 +36,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.recipe.RecipeItemListActivity"
+            android:name=".ui.recipe.RecipeActivity"
             android:label="@string/title_recipeitem_list"
             android:parentActivityName=".ui.recipes.RecipesActivity"
             android:theme="@style/AppTheme.NoActionBar">
@@ -45,13 +45,13 @@
                 android:value="br.com.ericksprengel.android.baking.ui.recipes.RecipesActivity" />
         </activity>
         <activity
-            android:name=".ui.recipe.RecipeItemDetailActivity"
+            android:name=".ui.recipe.StepActivity"
             android:label="@string/title_recipeitem_detail"
-            android:parentActivityName=".ui.recipe.RecipeItemListActivity"
+            android:parentActivityName=".ui.recipe.RecipeActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="br.com.ericksprengel.android.baking.ui.recipe.RecipeItemListActivity" />
+                android:value="br.com.ericksprengel.android.baking.ui.recipe.RecipeActivity" />
         </activity>
     </application>
 

@@ -19,7 +19,6 @@ import br.com.ericksprengel.android.baking.data.Step;
 import br.com.ericksprengel.android.baking.data.source.RecipesDataSource;
 import br.com.ericksprengel.android.baking.data.source.RecipesRepository;
 import br.com.ericksprengel.android.baking.ui.BaseActivity;
-import br.com.ericksprengel.android.baking.ui.recipes.RecipesAdapter;
 import br.com.ericksprengel.android.baking.util.Inject;
 
 import static android.support.v4.app.NavUtils.navigateUpFromSameTask;
@@ -28,14 +27,14 @@ import static android.support.v4.app.NavUtils.navigateUpFromSameTask;
  * An activity representing a list of RecipeItems. This activity
  * has different presentations for handset and tablet-size devices. On
  * handsets, the activity presents a list of items, which when touched,
- * lead to a {@link RecipeItemDetailActivity} representing
+ * lead to a {@link StepActivity} representing
  * item details. On tablets, the activity presents the list of items and
  * item details side-by-side using two vertical panes.
  */
-public class RecipeItemListActivity extends BaseActivity implements RecipeStepAdapter.OnStepClickListener {
+public class RecipeActivity extends BaseActivity implements StepAdapter.OnStepClickListener {
 
 
-    final private static String LOG_TAG = "RecipeItemListActivity";
+    final private static String LOG_TAG = "RecipeActivity";
 
     final private static String PARAM_RECIPE = "recipe";
 
@@ -47,11 +46,11 @@ public class RecipeItemListActivity extends BaseActivity implements RecipeStepAd
 
     // TODO: It should be injected.
     private RecipesRepository mRecipesRepository;
-    private RecipeStepAdapter mAdapter;
+    private StepAdapter mAdapter;
 
 
     public static Intent getStartIntent(Context context, Recipe recipe) {
-        Intent intent = new Intent(context, RecipeItemListActivity.class);
+        Intent intent = new Intent(context, RecipeActivity.class);
         intent.putExtra(PARAM_RECIPE, recipe.getId());
         return intent;
     }
@@ -59,7 +58,7 @@ public class RecipeItemListActivity extends BaseActivity implements RecipeStepAd
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_recipeitem_list);
+        setContentView(R.layout.activity_recipe);
 
         mRecipesRepository = Inject.getRecipeRepository(this);
 
@@ -81,7 +80,7 @@ public class RecipeItemListActivity extends BaseActivity implements RecipeStepAd
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        if (findViewById(R.id.recipeitem_detail_container) != null) {
+        if (findViewById(R.id.recipe_ac_recipeitem_detail_container) != null) {
             // The detail container view will be present only in the
             // large-screen layouts (res/values-w900dp).
             // If this view is present, then the
@@ -89,8 +88,8 @@ public class RecipeItemListActivity extends BaseActivity implements RecipeStepAd
             mTwoPane = true;
         }
 
-        RecyclerView recyclerView = findViewById(R.id.recipeitem_list);
-        mAdapter = new RecipeStepAdapter(this);
+        RecyclerView recyclerView = findViewById(R.id.recipe_ac_step_list);
+        mAdapter = new StepAdapter(this);
         recyclerView.setAdapter(mAdapter);
 
         loadRecipe();
@@ -132,12 +131,12 @@ public class RecipeItemListActivity extends BaseActivity implements RecipeStepAd
     public void onStepClick(Step step) {
         if (mTwoPane) {
             Bundle arguments = new Bundle();
-            RecipeItemDetailFragment fragment = RecipeItemDetailFragment.newInstance(step.getId());
+            StepFragment fragment = StepFragment.newInstance(step.getId());
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.recipeitem_detail_container, fragment)
+                    .replace(R.id.recipe_ac_recipeitem_detail_container, fragment)
                     .commit();
         } else {
-            Intent intent = RecipeItemDetailActivity.getStartIntent(this, step);
+            Intent intent = StepActivity.getStartIntent(this, step);
             startActivity(intent);
         }
     }

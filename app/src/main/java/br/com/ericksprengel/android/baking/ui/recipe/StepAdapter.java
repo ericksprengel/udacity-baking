@@ -15,7 +15,7 @@ import br.com.ericksprengel.android.baking.data.Step;
  * Created by erick.sprengel on 04/01/2018.
  */
 
-public class RecipeStepAdapter extends RecyclerView.Adapter<RecipeStepAdapter.ViewHolder> {
+public class StepAdapter extends RecyclerView.Adapter<StepAdapter.ViewHolder> {
 
 
 
@@ -52,7 +52,7 @@ public class RecipeStepAdapter extends RecyclerView.Adapter<RecipeStepAdapter.Vi
     private List<Step> mSteps;
     private OnStepClickListener mOnClickStepListener;
 
-    RecipeStepAdapter(OnStepClickListener listener) {
+    StepAdapter(OnStepClickListener listener) {
         this.mOnClickStepListener = listener;
     }
 
@@ -62,8 +62,8 @@ public class RecipeStepAdapter extends RecyclerView.Adapter<RecipeStepAdapter.Vi
     }
 
     @Override
-    public RecipeStepAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
-                                                           int viewType) {
+    public StepAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
+                                                     int viewType) {
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.activity_recipe_steps_item, parent, false);
         return new ViewHolder(v);

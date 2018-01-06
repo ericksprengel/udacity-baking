@@ -5,7 +5,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.List;
@@ -14,14 +13,8 @@ import br.com.ericksprengel.android.baking.R;
 import br.com.ericksprengel.android.baking.data.Recipe;
 import br.com.ericksprengel.android.baking.data.source.RecipesDataSource;
 import br.com.ericksprengel.android.baking.data.source.RecipesRepository;
-import br.com.ericksprengel.android.baking.data.source.local.BakingDatabase;
-import br.com.ericksprengel.android.baking.data.source.local.RecipesLocalDataSource;
-import br.com.ericksprengel.android.baking.data.source.remote.BakingServicesBuilder;
-import br.com.ericksprengel.android.baking.data.source.remote.RecipesRemoteDataSource;
 import br.com.ericksprengel.android.baking.ui.BaseActivity;
-import br.com.ericksprengel.android.baking.ui.recipe.RecipeItemDetailActivity;
-import br.com.ericksprengel.android.baking.ui.recipe.RecipeItemListActivity;
-import br.com.ericksprengel.android.baking.util.AppExecutors;
+import br.com.ericksprengel.android.baking.ui.recipe.RecipeActivity;
 import br.com.ericksprengel.android.baking.util.Inject;
 
 public class RecipesActivity extends BaseActivity implements View.OnClickListener, RecipesAdapter.OnRecipeClickListener {
@@ -95,7 +88,7 @@ public class RecipesActivity extends BaseActivity implements View.OnClickListene
     @Override
     public void onRecipeClick(Recipe recipe) {
         Toast.makeText(this, recipe.getName(), Toast.LENGTH_LONG).show();
-        startActivity(RecipeItemListActivity.getStartIntent(this, recipe));
+        startActivity(RecipeActivity.getStartIntent(this, recipe));
     }
 
     @Override

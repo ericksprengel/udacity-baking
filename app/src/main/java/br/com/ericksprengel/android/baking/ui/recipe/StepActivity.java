@@ -7,27 +7,25 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
 
 import br.com.ericksprengel.android.baking.R;
-import br.com.ericksprengel.android.baking.data.Recipe;
 import br.com.ericksprengel.android.baking.data.Step;
 import br.com.ericksprengel.android.baking.ui.BaseActivity;
 
-import static br.com.ericksprengel.android.baking.ui.recipe.RecipeItemDetailFragment.ARG_STEP_ID;
+import static br.com.ericksprengel.android.baking.ui.recipe.StepFragment.ARG_STEP_ID;
 
 /**
  * An activity representing a single RecipeItem detail screen. This
  * activity is only used on narrow width devices. On tablet-size devices,
  * item details are presented side-by-side with a list of items
- * in a {@link RecipeItemListActivity}.
+ * in a {@link RecipeActivity}.
  */
-public class RecipeItemDetailActivity extends BaseActivity {
+public class StepActivity extends BaseActivity {
 
     public static Intent getStartIntent(Context context, Step step) {
-        Intent intent = new Intent(context, RecipeItemListActivity.class);
+        Intent intent = new Intent(context, RecipeActivity.class);
         intent.putExtra(ARG_STEP_ID, step.getId());
         return intent;
     }
@@ -35,7 +33,7 @@ public class RecipeItemDetailActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_recipeitem_detail);
+        setContentView(R.layout.activity_step);
         Toolbar toolbar = findViewById(R.id.detail_toolbar);
         setSupportActionBar(toolbar);
 
@@ -67,9 +65,9 @@ public class RecipeItemDetailActivity extends BaseActivity {
             // Create the detail fragment and add it to the activity
             // using a fragment transaction.
             int stepId = getIntent().getIntExtra(ARG_STEP_ID, -1);
-            RecipeItemDetailFragment fragment = RecipeItemDetailFragment.newInstance(stepId);
+            StepFragment fragment = StepFragment.newInstance(stepId);
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.recipeitem_detail_container, fragment)
+                    .add(R.id.recipe_ac_recipeitem_detail_container, fragment)
                     .commit();
         }
     }
@@ -84,7 +82,7 @@ public class RecipeItemDetailActivity extends BaseActivity {
             //
             // http://developer.android.com/design/patterns/navigation.html#up-vs-back
             //
-            navigateUpTo(new Intent(this, RecipeItemListActivity.class));
+            navigateUpTo(new Intent(this, RecipeActivity.class));
             return true;
         }
         return super.onOptionsItemSelected(item);
