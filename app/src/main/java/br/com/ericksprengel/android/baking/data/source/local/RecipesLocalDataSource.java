@@ -232,4 +232,9 @@ public class RecipesLocalDataSource implements RecipesDataSource {
 
         mAppExecutors.diskIO().execute(runnable);
     }
+
+    @Override
+    public List<Ingredient> getIngredients(int recipeId) {
+        return mIngredientsDao.getIngredients(recipeId);
+    }
 }

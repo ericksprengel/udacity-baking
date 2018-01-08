@@ -22,6 +22,7 @@ import android.support.annotation.NonNull;
 import java.util.List;
 
 import br.com.ericksprengel.android.baking.R;
+import br.com.ericksprengel.android.baking.data.Ingredient;
 import br.com.ericksprengel.android.baking.data.Recipe;
 import br.com.ericksprengel.android.baking.data.source.RecipesDataSource;
 import retrofit2.Call;
@@ -117,6 +118,11 @@ public class RecipesRemoteDataSource implements RecipesDataSource {
 
     @Override
     public void getIngredients(int recipeId, @NonNull LoadIngredientsCallback callback) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public List<Ingredient> getIngredients(int recipeId) {
         throw new UnsupportedOperationException();
     }
 }

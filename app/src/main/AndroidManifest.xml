@@ -35,6 +35,8 @@
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
         </activity>
+        <service android:name=".widgets.recipe.RecipeWidgetService"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
         <activity
             android:name=".ui.recipe.RecipeActivity"
             android:label="@string/title_recipeitem_list"

@@ -3,9 +3,15 @@ package br.com.ericksprengel.android.baking.widgets.recipe;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
+import android.content.Intent;
 import android.widget.RemoteViews;
 
 import br.com.ericksprengel.android.baking.R;
+import br.com.ericksprengel.android.baking.data.Recipe;
+import br.com.ericksprengel.android.baking.data.source.RecipesDataSource;
+import br.com.ericksprengel.android.baking.data.source.RecipesRepository;
+import br.com.ericksprengel.android.baking.ui.recipes.RecipesActivity;
+import br.com.ericksprengel.android.baking.util.Inject;
 
 /**
  * Implementation of App Widget functionality.
@@ -13,16 +19,38 @@ import br.com.ericksprengel.android.baking.R;
  */
 public class RecipeWidget extends AppWidgetProvider {
 
-    static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
-                                int appWidgetId) {
+    static void updateAppWidget(Context context, final AppWidgetManager appWidgetManager,
+                                final int appWidgetId) {
 
-        CharSequence widgetText = RecipeWidgetConfigureActivity.loadTitlePref(context, appWidgetId);
+        int recipeId = RecipeWidgetConfigureActivity.loadRecipePref(context, appWidgetId);
         // Construct the RemoteViews object
-        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.recipe_widget);
-        views.setTextViewText(R.id.appwidget_text, widgetText);
+        final RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.recipe_widget);
+
+        RecipesRepository recipesRepository = Inject.getRecipeRepository(context);
+        recipesRepository.getRecipe(recipeId, new RecipesDataSource.LoadRecipeCallback() {
+            @Override
+            public void onRecipeLoaded(Recipe recipe) {
+                views.setTextViewText(R.id.recipe_wd_recipe_name_textview, recipe.getName());
+                appWidgetManager.partiallyUpdateAppWidget(appWidgetId, views);
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+                views.setTextViewText(R.id.recipe_wd_recipe_name_textview, "--//--");
+                appWidgetManager.partiallyUpdateAppWidget(appWidgetId, views);
+            }
+        });
+
+        Intent intent = new Intent(context, RecipeWidgetService.class);
+        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+        intent.putExtra("recipe_id", recipeId);
+        views.setRemoteAdapter(R.id.recipe_wd_ingredients_listview, intent);
+
 
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);
+
+
     }
 
     @Override
@@ -37,7 +65,7 @@ public class RecipeWidget extends AppWidgetProvider {
     public void onDeleted(Context context, int[] appWidgetIds) {
         // When the user deletes the widget, delete the preference associated with it.
         for (int appWidgetId : appWidgetIds) {
-            RecipeWidgetConfigureActivity.deleteTitlePref(context, appWidgetId);
+            RecipeWidgetConfigureActivity.deleteRecipePref(context, appWidgetId);
         }
     }
 

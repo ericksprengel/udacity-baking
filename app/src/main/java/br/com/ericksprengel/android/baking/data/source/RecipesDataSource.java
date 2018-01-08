@@ -88,4 +88,6 @@ public interface RecipesDataSource {
 
     void getIngredients(int recipeId, @NonNull LoadIngredientsCallback callback);
 
+    List<Ingredient> getIngredients(int recipeId);
+
 }

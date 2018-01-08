@@ -6,6 +6,8 @@ import android.arch.persistence.room.PrimaryKey;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.text.DecimalFormat;
+
 @Entity(tableName = "ingredients",
         primaryKeys = {"id", "recipeId"},
         foreignKeys = {
@@ -68,5 +70,9 @@ public class Ingredient {
 
     public void setRecipeId(int recipeId) {
         this.recipeId = recipeId;
+    }
+
+    public String getFormattedQuantity() {
+        return String.format("%s %s", new DecimalFormat("0.##").format(quantity), measure);
     }
 }

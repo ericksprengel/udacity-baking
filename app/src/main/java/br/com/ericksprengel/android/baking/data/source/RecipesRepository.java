@@ -349,6 +349,29 @@ public class RecipesRepository implements RecipesDataSource {
         });
     }
 
+    @Override
+    public List<Ingredient> getIngredients(int recipeId) {
+        List<Ingredient> cachedIngredients = getIngredientsWithRecipeId(recipeId);
+
+        // Respond immediately with cache if available
+        if (cachedIngredients != null) {
+            return cachedIngredients;
+        }
+
+        // Load from persisted if needed.
+
+        // Is the ingredients in the local data source? If not, the app data was cleared.
+        List<Ingredient> ingredients = mRecipesLocalDataSource.getIngredients(recipeId);
+        // Do in memory cache update to keep the app UI up to date
+        if (mCachedIngredientsByRecipe == null) {
+            mCachedIngredientsByRecipe = new LinkedHashMap<>();
+        }
+        mCachedIngredientsByRecipe.put(recipeId, ingredients);
+
+        return ingredients;
+    }
+
+
     @Nullable
     private List<Step> getStepsWithRecipeId(int recipeId) {
         if (mCachedStepsByRecipe == null|| mCachedStepsByRecipe.isEmpty()) {

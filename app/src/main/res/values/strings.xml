@@ -10,7 +10,7 @@
 
     <!-- Recipes Widget -->
     <string name="appwidget_text">EXAMPLE</string>
-    <string name="configure">Configure</string>
+    <string name="recipe_widget_configure_ac_configure_label">Please choose a recipe:</string>
     <string name="add_widget">Add widget</string>
 
     <!-- Remote Services messages-->
