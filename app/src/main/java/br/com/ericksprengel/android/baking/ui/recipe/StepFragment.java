@@ -16,8 +16,8 @@ import br.com.ericksprengel.android.baking.util.Inject;
 
 public class StepFragment extends Fragment {
 
-    public static final String ARG_RECIPE_ID = "recipe_id";
-    public static final String ARG_STEP_ID = "step_id";
+    private static final String ARG_RECIPE_ID = "recipe_id";
+    private static final String ARG_STEP_ID = "step_id";
 
     private Step mStep;
     private TextView mDescription;

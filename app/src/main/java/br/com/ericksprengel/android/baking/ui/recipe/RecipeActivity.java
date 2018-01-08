@@ -107,10 +107,8 @@ public class RecipeActivity extends AppCompatActivity implements StepAdapter.OnS
                             .replace(R.id.recipe_ac_recipeitem_detail_container, fragment)
                             .commit();
                 } else {
-                    //TODO: create ingredients activity
-                    Toast.makeText(RecipeActivity.this, "//TODO: create ingredients activity", Toast.LENGTH_LONG).show();
-                    //Intent intent = IngredientActivity.getStartIntent(this, mRecipeId);
-                    //startActivity(intent);
+                    Intent intent = IngredientsActivity.getStartIntent(RecipeActivity.this, mRecipeId);
+                    startActivity(intent);
                 }
             }
         });

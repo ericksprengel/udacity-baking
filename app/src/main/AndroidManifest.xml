@@ -53,6 +53,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="br.com.ericksprengel.android.baking.ui.recipe.RecipeActivity" />
         </activity>
+        <activity android:name=".ui.recipe.IngredientsActivity"></activity>
     </application>
 
 </manifest>

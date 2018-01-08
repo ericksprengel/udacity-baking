@@ -14,11 +14,11 @@ import br.com.ericksprengel.android.baking.R;
 import br.com.ericksprengel.android.baking.data.Step;
 import br.com.ericksprengel.android.baking.ui.BaseActivity;
 
-import static br.com.ericksprengel.android.baking.ui.recipe.StepFragment.ARG_RECIPE_ID;
-import static br.com.ericksprengel.android.baking.ui.recipe.StepFragment.ARG_STEP_ID;
-
 
 public class StepActivity extends BaseActivity {
+
+    private static final String ARG_RECIPE_ID = "recipe_id";
+    private static final String ARG_STEP_ID = "step_id";
 
     public static Intent getStartIntent(Context context, Step step) {
         Intent intent = new Intent(context, StepActivity.class);
