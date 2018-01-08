@@ -18,21 +18,21 @@ import com.google.gson.annotations.SerializedName;
 public class Step {
 
     @SerializedName("id")
-    int id;
+    private int id;
 
     @SerializedName("videoURL")
-    String videoURL;
+    private String videoURL;
 
     @SerializedName("description")
-    String description;
+    private String description;
 
     @SerializedName("shortDescription")
-    String shortDescription;
+    private String shortDescription;
 
     @SerializedName("thumbnailURL")
-    String thumbnailURL;
+    private String thumbnailURL;
 
-    int recipeId;
+    private int recipeId;
 
     public int getId() {
         return id;
@@ -82,15 +82,4 @@ public class Step {
         this.recipeId = recipeId;
     }
 
-    @Override
-     public String toString(){
-        return 
-            "Step{" +
-            "videoURL = '" + videoURL + '\'' + 
-            ",description = '" + description + '\'' + 
-            ",id = '" + id + '\'' + 
-            ",shortDescription = '" + shortDescription + '\'' + 
-            ",thumbnailURL = '" + thumbnailURL + '\'' + 
-            "}";
-        }
 }

@@ -1,33 +1,72 @@
 package br.com.ericksprengel.android.baking.data;
 
-import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.PrimaryKey;
 
 import com.google.gson.annotations.SerializedName;
 
-@Entity(tableName = "ingredients")
+@Entity(tableName = "ingredients",
+        primaryKeys = {"id", "recipeId"},
+        foreignKeys = {
+                @ForeignKey(
+                        entity = Recipe.class,
+                        parentColumns = "id",
+                        childColumns = "recipeId",
+                        onDelete = ForeignKey.CASCADE)
+        })
 public class Ingredient {
 
-    @PrimaryKey(autoGenerate = true)
     public int id;
 
     @SerializedName("quantity")
-    public float quantity;
+    private float quantity;
 
     @SerializedName("measure")
-    public String measure;
+    private String measure;
 
     @SerializedName("ingredient")
-    public String ingredient;
+    private String ingredient;
 
-    @Override
-     public String toString(){
-        return 
-            "Ingredient{" +
-            "quantity = '" + quantity + '\'' + 
-            ",measure = '" + measure + '\'' + 
-            ",ingredient = '" + ingredient + '\'' + 
-            "}";
-        }
+    private int recipeId;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public float getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(float quantity) {
+        this.quantity = quantity;
+    }
+
+    public String getMeasure() {
+        return measure;
+    }
+
+    public void setMeasure(String measure) {
+        this.measure = measure;
+    }
+
+    public String getIngredient() {
+        return ingredient;
+    }
+
+    public void setIngredient(String ingredient) {
+        this.ingredient = ingredient;
+    }
+
+    public int getRecipeId() {
+        return recipeId;
+    }
+
+    public void setRecipeId(int recipeId) {
+        this.recipeId = recipeId;
+    }
 }

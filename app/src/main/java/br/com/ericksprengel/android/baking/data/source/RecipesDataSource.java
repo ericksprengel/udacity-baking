@@ -20,6 +20,7 @@ import android.support.annotation.NonNull;
 
 import java.util.List;
 
+import br.com.ericksprengel.android.baking.data.Ingredient;
 import br.com.ericksprengel.android.baking.data.Recipe;
 import br.com.ericksprengel.android.baking.data.Step;
 
@@ -73,4 +74,18 @@ public interface RecipesDataSource {
     void getSteps(int recipeId, @NonNull LoadStepsCallback callback);
 
     void getStep(int recipeId, int stepId, @NonNull LoadStepCallback callback);
+
+    /*
+     * RECIPE INGREDIENTS
+     */
+
+    interface LoadIngredientsCallback {
+
+        void onIngredientsLoaded(List<Ingredient> ingredients);
+
+        void onDataNotAvailable();
+    }
+
+    void getIngredients(int recipeId, @NonNull LoadIngredientsCallback callback);
+
 }

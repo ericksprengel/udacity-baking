@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -19,7 +20,6 @@ import br.com.ericksprengel.android.baking.data.Recipe;
 import br.com.ericksprengel.android.baking.data.Step;
 import br.com.ericksprengel.android.baking.data.source.RecipesDataSource;
 import br.com.ericksprengel.android.baking.data.source.RecipesRepository;
-import br.com.ericksprengel.android.baking.ui.BaseActivity;
 import br.com.ericksprengel.android.baking.util.Inject;
 
 import static android.support.v4.app.NavUtils.navigateUpFromSameTask;
@@ -50,6 +50,8 @@ public class RecipeActivity extends AppCompatActivity implements StepAdapter.OnS
     private StepAdapter mAdapter;
     private RecyclerView mRecyclerView;
 
+    private int mRecipeId;
+
 
     public static Intent getStartIntent(Context context, Recipe recipe) {
         Intent intent = new Intent(context, RecipeActivity.class);
@@ -61,6 +63,8 @@ public class RecipeActivity extends AppCompatActivity implements StepAdapter.OnS
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe);
+
+        mRecipeId = getIntent().getIntExtra(PARAM_RECIPE, -1);
 
         mRecipesRepository = Inject.getRecipeRepository(this);
 
@@ -94,12 +98,28 @@ public class RecipeActivity extends AppCompatActivity implements StepAdapter.OnS
         mAdapter = new StepAdapter(this);
         mRecyclerView.setAdapter(mAdapter);
 
+        findViewById(R.id.recipe_ac_ingredient_cardview).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mTwoPane) {
+                    IngredientsFragment fragment = IngredientsFragment.newInstance(mRecipeId);
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.recipe_ac_recipeitem_detail_container, fragment)
+                            .commit();
+                } else {
+                    //TODO: create ingredients activity
+                    Toast.makeText(RecipeActivity.this, "//TODO: create ingredients activity", Toast.LENGTH_LONG).show();
+                    //Intent intent = IngredientActivity.getStartIntent(this, mRecipeId);
+                    //startActivity(intent);
+                }
+            }
+        });
+
         loadRecipe();
     }
 
     private void loadRecipe() {
-        int recipeId = getIntent().getIntExtra(PARAM_RECIPE, -1);
-        mRecipesRepository.getSteps(recipeId, new RecipesDataSource.LoadStepsCallback() {
+        mRecipesRepository.getSteps(mRecipeId, new RecipesDataSource.LoadStepsCallback() {
             @Override
             public void onStepsLoaded(List<Step> steps) {
                 mAdapter.setSteps(steps);

@@ -24,6 +24,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import br.com.ericksprengel.android.baking.data.Ingredient;
 import br.com.ericksprengel.android.baking.data.Recipe;
 import br.com.ericksprengel.android.baking.data.Step;
 
@@ -46,6 +47,7 @@ public class RecipesRepository implements RecipesDataSource {
     private Map<Integer, Recipe> mCachedRecipes;
     private Map<Integer, List<Step>> mCachedStepsByRecipe;
     private Map<Integer, Map<Integer, Step>> mCachedSteps; // step primary key is recipeId and stepId
+    private Map<Integer, List<Ingredient>> mCachedIngredientsByRecipe;
 
     /**
      * Marks the cache as invalid, to force an update the next time data is requested.
@@ -213,6 +215,11 @@ public class RecipesRepository implements RecipesDataSource {
         for (Recipe recipe: recipes) {
             mCachedRecipes.put(recipe.getId(), recipe);
         }
+
+        // clean cached items
+        mCachedSteps = null;
+        mCachedStepsByRecipe = null;
+        mCachedIngredientsByRecipe = null;
         mCacheIsDirty = false;
     }
 
@@ -309,6 +316,39 @@ public class RecipesRepository implements RecipesDataSource {
         });
     }
 
+    @Override
+    public void getIngredients(final int recipeId, @NonNull final LoadIngredientsCallback callback) {
+        List<Ingredient> cachedIngredients = getIngredientsWithRecipeId(recipeId);
+
+        // Respond immediately with cache if available
+        if (cachedIngredients != null) {
+            callback.onIngredientsLoaded(cachedIngredients);
+            return;
+        }
+
+        // Load from persisted if needed.
+
+        // Is the ingredients in the local data source? If not, the app data was cleared.
+        mRecipesLocalDataSource.getIngredients(recipeId, new LoadIngredientsCallback() {
+            @Override
+            public void onIngredientsLoaded(List<Ingredient> ingredients) {
+                // Do in memory cache update to keep the app UI up to date
+                if (mCachedIngredientsByRecipe == null) {
+                    mCachedIngredientsByRecipe = new LinkedHashMap<>();
+                }
+                mCachedIngredientsByRecipe.put(recipeId, ingredients);
+
+                callback.onIngredientsLoaded(ingredients);
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+                // it's a invalid recipe or it was removed from cache.
+                callback.onDataNotAvailable();
+            }
+        });
+    }
+
     @Nullable
     private List<Step> getStepsWithRecipeId(int recipeId) {
         if (mCachedStepsByRecipe == null|| mCachedStepsByRecipe.isEmpty()) {
@@ -329,5 +369,14 @@ public class RecipesRepository implements RecipesDataSource {
             return null;
         }
         return recipeSteps.get(stepId);
+    }
+
+    @Nullable
+    private List<Ingredient> getIngredientsWithRecipeId(int recipeId) {
+        if (mCachedIngredientsByRecipe == null|| mCachedIngredientsByRecipe.isEmpty()) {
+            return null;
+        } else {
+            return mCachedIngredientsByRecipe.get(recipeId);
+        }
     }
 }

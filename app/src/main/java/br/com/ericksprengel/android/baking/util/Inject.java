@@ -8,15 +8,12 @@ import br.com.ericksprengel.android.baking.data.source.local.RecipesLocalDataSou
 import br.com.ericksprengel.android.baking.data.source.remote.BakingServicesBuilder;
 import br.com.ericksprengel.android.baking.data.source.remote.RecipesRemoteDataSource;
 
-/**
- * Created by erick.sprengel on 05/01/2018.
- */
 
 public class Inject {
     public static RecipesRepository getRecipeRepository(Context context) {
         BakingDatabase database = BakingDatabase.getInstance(context);
         return RecipesRepository.getInstance(
                 RecipesRemoteDataSource.getInstance(BakingServicesBuilder.build(context), context.getResources()),
-                RecipesLocalDataSource.getInstance(new AppExecutors(), database.recipesDao(), database.stepsDao()));
+                RecipesLocalDataSource.getInstance(new AppExecutors(), database.recipesDao(), database.stepsDao(), database.ingredientsDao()));
     }
 }

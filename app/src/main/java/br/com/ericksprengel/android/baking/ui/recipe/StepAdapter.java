@@ -22,20 +22,19 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.ViewHolder> {
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         Step mStep;
 
-        private final TextView mIndex;
-        private final TextView mShortDescription;
+        private final TextView mName;
 
         ViewHolder(View v) {
             super(v);
-            mIndex = v.findViewById(R.id.recipe_ac_index_textview);
-            mShortDescription = v.findViewById(R.id.recipe_ac_shortdescription_textview);
+            mName = v.findViewById(R.id.recipe_ac_step_name_textview);
             v.setOnClickListener(this);
         }
 
         void updateData(int index, Step step) {
             mStep = step;
-            mIndex.setText(String.valueOf(index));
-            mShortDescription.setText(mStep.getShortDescription());
+            mName.setText(mName.getResources().getString(R.string.recipe_ac_step_name_textview,
+                    index,
+                    mStep.getShortDescription()));
         }
 
         @Override

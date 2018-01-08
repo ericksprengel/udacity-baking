@@ -20,6 +20,7 @@ import android.support.annotation.NonNull;
 
 import java.util.List;
 
+import br.com.ericksprengel.android.baking.data.Ingredient;
 import br.com.ericksprengel.android.baking.data.Recipe;
 import br.com.ericksprengel.android.baking.data.Step;
 import br.com.ericksprengel.android.baking.data.source.RecipesDataSource;
@@ -37,25 +38,30 @@ public class RecipesLocalDataSource implements RecipesDataSource {
 
     private RecipesDao mRecipesDao;
     private StepsDao mStepsDao;
+    private IngredientsDao mIngredientsDao;
 
     private AppExecutors mAppExecutors;
 
     // Prevent direct instantiation.
     private RecipesLocalDataSource(@NonNull AppExecutors appExecutors,
                                    @NonNull RecipesDao recipesDao,
-                                   @NonNull StepsDao stepsDao) {
+                                   @NonNull StepsDao stepsDao,
+                                   @NonNull IngredientsDao ingredientsDao) {
         mAppExecutors = appExecutors;
         mRecipesDao = recipesDao;
         mStepsDao = stepsDao;
+        mIngredientsDao = ingredientsDao;
     }
 
     public static RecipesLocalDataSource getInstance(@NonNull AppExecutors appExecutors,
                                                      @NonNull RecipesDao recipesDao,
-                                                     @NonNull StepsDao stepsDao) {
+                                                     @NonNull StepsDao stepsDao,
+                                                     @NonNull IngredientsDao ingredientsDao) {
         if (INSTANCE == null) {
             synchronized (RecipesLocalDataSource.class) {
                 if (INSTANCE == null) {
-                    INSTANCE = new RecipesLocalDataSource(appExecutors, recipesDao, stepsDao);
+                    INSTANCE = new RecipesLocalDataSource(appExecutors,
+                            recipesDao, stepsDao, ingredientsDao);
                 }
             }
         }
@@ -128,7 +134,13 @@ public class RecipesLocalDataSource implements RecipesDataSource {
                 for(Step step : recipe.getSteps()) {
                     step.setRecipeId(recipe.getId());
                 }
+                for(int i = 0; i < recipe.getIngredients().size(); i++) {
+                    Ingredient ingredient = recipe.getIngredients().get(i);
+                    ingredient.setId(i+1);
+                    ingredient.setRecipeId(recipe.getId());
+                }
                 mStepsDao.insertAll(recipe.getSteps());
+                mIngredientsDao.insertAll(recipe.getIngredients());
             }
         };
         mAppExecutors.diskIO().execute(saveRunnable);
@@ -153,7 +165,7 @@ public class RecipesLocalDataSource implements RecipesDataSource {
     }
 
     @Override
-    public void getSteps(final int recipeId, final LoadStepsCallback callback) {
+    public void getSteps(final int recipeId, @NonNull final LoadStepsCallback callback) {
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
@@ -187,6 +199,29 @@ public class RecipesLocalDataSource implements RecipesDataSource {
                     public void run() {
                         if (step != null) {
                             callback.onStepLoaded(step);
+                        } else {
+                            callback.onDataNotAvailable();
+                        }
+                    }
+                });
+            }
+        };
+
+        mAppExecutors.diskIO().execute(runnable);
+    }
+
+    @Override
+    public void getIngredients(final int recipeId, @NonNull final LoadIngredientsCallback callback) {
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                final List<Ingredient> ingredients = mIngredientsDao.getIngredients(recipeId);
+
+                mAppExecutors.mainThread().execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (ingredients != null) {
+                            callback.onIngredientsLoaded(ingredients);
                         } else {
                             callback.onDataNotAvailable();
                         }

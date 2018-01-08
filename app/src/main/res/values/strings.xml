@@ -17,5 +17,7 @@
     <string name="remote_services_request_error_get_recipes">"Recipes couldn't be loaded."</string>
     <string name="title_recipeitem_list">RecipeItems</string>
     <string name="title_recipeitem_detail">RecipeItem Detail</string>
+    <string name="recipe_ac_ingredients">Ingredients</string>
+    <string name="recipe_ac_step_name_textview">%1$d. %2$s</string>
 
 </resources>
