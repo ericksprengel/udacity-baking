@@ -18,16 +18,19 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.Vi
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         Ingredient mIngredient;
 
+        private final TextView mQuantity;
         private final TextView mName;
 
         ViewHolder(View v) {
             super(v);
+            mQuantity = v.findViewById(R.id.recipe_ac_ingredient_quantity_textview);
             mName = v.findViewById(R.id.recipe_ac_ingredient_name_textview);
             v.setOnClickListener(this);
         }
 
         void updateData(int index, Ingredient ingredient) {
             mIngredient = ingredient;
+            mQuantity.setText(mIngredient.getFormattedQuantity());
             mName.setText(mIngredient.getIngredient());
         }
 

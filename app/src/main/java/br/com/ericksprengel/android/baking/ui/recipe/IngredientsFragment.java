@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -68,6 +70,10 @@ public class IngredientsFragment extends Fragment implements IngredientAdapter.O
         RecyclerView recyclerView = rootView.findViewById(R.id.recipe_ac_ingredient_list);
         mAdapter = new IngredientAdapter(this);
         recyclerView.setAdapter(mAdapter);
+
+        DividerItemDecoration divider = new DividerItemDecoration(recyclerView.getContext(),
+                LinearLayoutManager.VERTICAL);
+        recyclerView.addItemDecoration(divider);
 
         loadIngredients(recipeId);
 
