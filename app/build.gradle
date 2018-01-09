@@ -61,4 +61,7 @@ dependencies {
     // Stetho dependencies
     implementation 'com.facebook.stetho:stetho:1.5.0'
     implementation 'com.facebook.stetho:stetho-okhttp3:1.5.0'
+
+    // Exoplayer
+    implementation 'com.google.android.exoplayer:exoplayer:2.6.1'
 }
