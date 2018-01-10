@@ -29,7 +29,7 @@
                 android:textColor="@android:color/white"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
                 android:padding="16dp"
-                android:text="@string/recipe_ac_ingredients"/>
+                android:text="@string/ingredients_ac_title"/>
         </android.support.v7.widget.CardView>
     </LinearLayout>
 

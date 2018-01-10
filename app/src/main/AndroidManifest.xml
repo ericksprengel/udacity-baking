@@ -48,14 +48,20 @@
         </activity>
         <activity
             android:name=".ui.recipe.StepActivity"
-            android:label="@string/title_recipeitem_detail"
-            android:parentActivityName=".ui.recipe.RecipeActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:label="@string/step_ac_title"
+            android:parentActivityName=".ui.recipe.RecipeActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="br.com.ericksprengel.android.baking.ui.recipe.RecipeActivity" />
         </activity>
-        <activity android:name=".ui.recipe.IngredientsActivity"></activity>
+        <activity
+            android:name=".ui.recipe.IngredientsActivity"
+            android:label="@string/ingredients_ac_title"
+            android:parentActivityName=".ui.recipe.RecipeActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="br.com.ericksprengel.android.baking.ui.recipe.RecipeActivity" />
+        </activity>
     </application>
 
 </manifest>

@@ -16,8 +16,8 @@
     <!-- Remote Services messages-->
     <string name="remote_services_request_error_get_recipes">"Recipes couldn't be loaded."</string>
     <string name="title_recipeitem_list">Recipe</string>
-    <string name="title_recipeitem_detail">Step Detail</string>
-    <string name="recipe_ac_ingredients">Ingredients</string>
+    <string name="step_ac_title">Step</string>
+    <string name="ingredients_ac_title">Ingredients</string>
     <string name="recipe_ac_step_name_textview">%1$d. %2$s</string>
     <string name="recipes_ac_servings">Servings: %1$d</string>
     <string name="ingredients_frag_query">list of ingredients %1$s</string>

@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -82,11 +83,12 @@ public class StepFragment extends Fragment {
     }
 
     private void loadStep(int recipeId, int stepId) {
-        RecipesRepository mRepository = Inject.getRecipeRepository(getContext());
+        final RecipesRepository mRepository = Inject.getRecipeRepository(getContext());
         mRepository.getStep(recipeId, stepId, new RecipesDataSource.LoadStepCallback() {
             @Override
             public void onStepLoaded(Step step) {
                 mStep = step;
+                ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(mStep.getShortDescription());
                 mDescription.setText(mStep.getDescription());
                 if(!TextUtils.isEmpty(mStep.getThumbnailURL())) {
                     Picasso.with(getContext())
