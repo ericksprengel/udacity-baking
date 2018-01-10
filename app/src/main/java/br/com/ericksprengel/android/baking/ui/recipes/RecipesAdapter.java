@@ -28,17 +28,20 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.ViewHold
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         Recipe mRecipe;
-        TextView mName;
+        final TextView mName;
+        final TextView mServings;
 
         ViewHolder(View v) {
             super(v);
             mName = v.findViewById(R.id.recipes_ac_name_textview);
+            mServings = v.findViewById(R.id.recipes_ac_servings_textview);
             v.setOnClickListener(this);
         }
 
         void updateData(Recipe recipe) {
             mRecipe = recipe;
             mName.setText(mRecipe.getName());
+            mServings.setText(mServings.getContext().getString(R.string.recipes_ac_servings, mRecipe.getServings()));
         }
 
         @Override
