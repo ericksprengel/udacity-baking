@@ -1,6 +1,8 @@
 package br.com.ericksprengel.android.baking.ui.recipe;
 
+import android.app.SearchManager;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -82,6 +84,8 @@ public class IngredientsFragment extends Fragment implements IngredientAdapter.O
 
     @Override
     public void onIngredientClick(Ingredient ingredient) {
-        Toast.makeText(getContext(), "DELICIOUS!", Toast.LENGTH_LONG).show();
+        Intent intent = new Intent(Intent.ACTION_WEB_SEARCH);
+        intent.putExtra(SearchManager.QUERY, getString(R.string.ingredients_frag_query, ingredient.getIngredient()));
+        startActivity(intent);
     }
 }
