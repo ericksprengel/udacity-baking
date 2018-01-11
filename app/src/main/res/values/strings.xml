@@ -21,5 +21,6 @@
     <string name="recipe_ac_step_name_textview">%1$d. %2$s</string>
     <string name="recipes_ac_servings">Servings: %1$d</string>
     <string name="ingredients_frag_query">list of ingredients %1$s</string>
+    <string name="step_frag_novideo_textview">There is no video for this step.</string>
 
 </resources>

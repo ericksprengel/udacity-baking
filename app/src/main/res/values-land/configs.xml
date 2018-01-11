@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <bool name="step_ac_fullscreen">true</bool>
+    <bool name="step_ac_not_fullscreen">false</bool>
+</resources>

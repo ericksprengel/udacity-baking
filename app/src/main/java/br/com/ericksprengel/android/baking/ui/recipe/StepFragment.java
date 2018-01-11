@@ -1,20 +1,22 @@
 package br.com.ericksprengel.android.baking.ui.recipe;
 
+import android.app.Activity;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.facebook.stetho.okhttp3.StethoInterceptor;
+import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
@@ -23,13 +25,13 @@ import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.google.android.exoplayer2.trackselection.TrackSelector;
+import com.google.android.exoplayer2.ui.PlaybackControlView;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.BandwidthMeter;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
-import com.squareup.picasso.OkHttpDownloader;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
@@ -43,10 +45,18 @@ public class StepFragment extends Fragment {
 
     private static final String ARG_RECIPE_ID = "recipe_id";
     private static final String ARG_STEP_ID = "step_id";
+    private static final String STATE_EXO_PLAYER_LAST_POSITION = "state_ep_last_position";
+    private static final String STATE_EXO_PLAYER_IS_PLAYING = "state_ep_is_playing";
 
     private Step mStep;
     private TextView mDescription;
+    private View mNoVideoMessage;
+
+    // ExoPlayer variables
     private SimpleExoPlayerView mSimpleExoPlayerView;
+    private SimpleExoPlayer mExoPlayer;
+    private boolean mExoPlayerIsPlaying = false;
+    private long mExoPlayerLastPosition = C.POSITION_UNSET;
 
     Target mThumbnailTarget = new Target() {
         @Override
@@ -80,6 +90,18 @@ public class StepFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if(savedInstanceState != null) {
+            mExoPlayerIsPlaying = savedInstanceState.getBoolean(STATE_EXO_PLAYER_IS_PLAYING);
+            mExoPlayerLastPosition = savedInstanceState.getLong(STATE_EXO_PLAYER_LAST_POSITION);
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putBoolean(STATE_EXO_PLAYER_IS_PLAYING, mExoPlayerIsPlaying);
+        outState.putLong(STATE_EXO_PLAYER_LAST_POSITION, mExoPlayerLastPosition);
+        super.onSaveInstanceState(outState);
     }
 
     private void loadStep(int recipeId, int stepId) {
@@ -88,14 +110,19 @@ public class StepFragment extends Fragment {
             @Override
             public void onStepLoaded(Step step) {
                 mStep = step;
-                mDescription.setText(mStep.getDescription());
+                if(mDescription != null) {
+                    mDescription.setText(mStep.getDescription());
+                }
                 if(!TextUtils.isEmpty(mStep.getThumbnailURL())) {
                     Picasso.with(getContext())
                             .load(mStep.getThumbnailURL())
                             .into(mThumbnailTarget);
                 }
                 if(!TextUtils.isEmpty(mStep.getVideoURL())) {
+                    mNoVideoMessage.setVisibility(View.GONE);
                     loadVideo(Uri.parse(mStep.getVideoURL()));
+                } else {
+                    mNoVideoMessage.setVisibility(View.VISIBLE);
                 }
             }
 
@@ -107,13 +134,14 @@ public class StepFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_recipe_step, container, false);
         mDescription = rootView.findViewById(R.id.step_frag_description_textview);
+        mNoVideoMessage = rootView.findViewById(R.id.step_frag_novideo_textview);
         mSimpleExoPlayerView = rootView.findViewById(R.id.step_frag_simpleexoplayerview);
 
-        int recipeId = getArguments().getInt(ARG_RECIPE_ID);
+        int recipeId = getArguments().getInt(ARG_RECIPE_ID, -1);
         int stepId = getArguments().getInt(ARG_STEP_ID);
         loadStep(recipeId, stepId);
 
@@ -129,12 +157,12 @@ public class StepFragment extends Fragment {
         TrackSelector trackSelector =
                 new DefaultTrackSelector(videoTrackSelectionFactory);
 
-        // 2. Create the player
-        SimpleExoPlayer player =
+        // 2. Create the mExoPlayer
+        mExoPlayer =
                 ExoPlayerFactory.newSimpleInstance(getContext(), trackSelector);
 
-        // Bind the player to the view.
-        mSimpleExoPlayerView.setPlayer(player);
+        // Bind the mExoPlayer to the view.
+        mSimpleExoPlayerView.setPlayer(mExoPlayer);
 
 
         // Produces DataSource instances through which media data is loaded.
@@ -143,7 +171,58 @@ public class StepFragment extends Fragment {
         // This is the MediaSource representing the media to be played.
         MediaSource videoSource = new ExtractorMediaSource.Factory(dataSourceFactory)
                 .createMediaSource(videoUri);
-        // Prepare the player with the source.
-        player.prepare(videoSource);
+        // Prepare the mExoPlayer with the source.
+        mExoPlayer.prepare(videoSource);
+
+        // Retrieve last state
+        mExoPlayer.setPlayWhenReady(mExoPlayerIsPlaying);
+        mExoPlayer.seekTo(mExoPlayerLastPosition);
+        mSimpleExoPlayerView.setControllerVisibilityListener(new PlaybackControlView.VisibilityListener() {
+            @Override
+            public void onVisibilityChange(int visibility) {
+                if(mCallback != null) {
+                    mCallback.onFullscreenRequested(visibility != View.VISIBLE);
+                }
+            }
+        });
+    }
+
+    OnFullscreenRequestedListener mCallback;
+
+    // Container Activity must implement this interface
+    public interface OnFullscreenRequestedListener {
+        void onFullscreenRequested(boolean isFullscreen);
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnFullscreenRequestedListener){
+            mCallback = (OnFullscreenRequestedListener) context;
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mSimpleExoPlayerView.showController();
+        mCallback.onFullscreenRequested(false);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        if(mExoPlayer != null) {
+            // Save ExoPlayer state
+            // Store off if we were playing so we know if we should start when we're foregrounded again.
+            mExoPlayerIsPlaying = mExoPlayer.getPlayWhenReady();
+            // Store off the last position our mExoPlayer was in before we paused it.
+            mExoPlayerLastPosition = mExoPlayer.getCurrentPosition();
+            // Pause the mExoPlayer
+            mExoPlayer.setPlayWhenReady(false);
+            mExoPlayer.release();
+            mExoPlayer = null;
+        }
     }
 }
