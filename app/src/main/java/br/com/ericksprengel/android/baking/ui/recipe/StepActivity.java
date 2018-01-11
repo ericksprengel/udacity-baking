@@ -1,17 +1,14 @@
 package br.com.ericksprengel.android.baking.ui.recipe;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.constraint.Group;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 
 import java.util.List;
@@ -24,7 +21,7 @@ import br.com.ericksprengel.android.baking.ui.BaseActivity;
 import br.com.ericksprengel.android.baking.util.Inject;
 
 
-public class StepActivity extends BaseActivity implements View.OnClickListener, StepFragment.OnFullscreenRequestedListener {
+public class StepActivity extends BaseActivity implements View.OnClickListener, StepFragment.OnPlayerControlsVisibilityChangeListener {
 
     private static final String ARG_RECIPE_ID = "recipe_id";
     private static final String ARG_STEP_ID = "step_id";
@@ -171,7 +168,7 @@ public class StepActivity extends BaseActivity implements View.OnClickListener, 
     }
 
     @Override
-    public void onFullscreenRequested(boolean isFullscreen) {
+    public void onPlayerControlesVisibilityChanged(boolean isFullscreen) {
         if(!getResources().getBoolean(R.bool.step_ac_fullscreen)) {
             return;
         }

@@ -1,6 +1,5 @@
 package br.com.ericksprengel.android.baking.ui.recipe;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
@@ -181,24 +180,24 @@ public class StepFragment extends Fragment {
             @Override
             public void onVisibilityChange(int visibility) {
                 if(mCallback != null) {
-                    mCallback.onFullscreenRequested(visibility != View.VISIBLE);
+                    mCallback.onPlayerControlesVisibilityChanged(visibility != View.VISIBLE);
                 }
             }
         });
     }
 
-    OnFullscreenRequestedListener mCallback;
+    OnPlayerControlsVisibilityChangeListener mCallback;
 
     // Container Activity must implement this interface
-    public interface OnFullscreenRequestedListener {
-        void onFullscreenRequested(boolean isFullscreen);
+    public interface OnPlayerControlsVisibilityChangeListener {
+        void onPlayerControlesVisibilityChanged(boolean isFullscreen);
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFullscreenRequestedListener){
-            mCallback = (OnFullscreenRequestedListener) context;
+        if (context instanceof OnPlayerControlsVisibilityChangeListener){
+            mCallback = (OnPlayerControlsVisibilityChangeListener) context;
         }
     }
 
@@ -206,7 +205,7 @@ public class StepFragment extends Fragment {
     public void onResume() {
         super.onResume();
         mSimpleExoPlayerView.showController();
-        mCallback.onFullscreenRequested(false);
+        mCallback.onPlayerControlesVisibilityChanged(false);
     }
 
     @Override
