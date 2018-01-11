@@ -61,7 +61,7 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.Vi
     public IngredientAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
                                                            int viewType) {
         View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.activity_recipe_ingredients_item, parent, false);
+                .inflate(R.layout.fragment_recipe_ingredients_item, parent, false);
         return new ViewHolder(v);
     }
 

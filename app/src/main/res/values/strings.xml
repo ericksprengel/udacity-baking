@@ -11,7 +11,6 @@
     <!-- Recipes Widget -->
     <string name="appwidget_text">EXAMPLE</string>
     <string name="recipe_widget_configure_ac_configure_label">Please choose a recipe:</string>
-    <string name="add_widget">Add widget</string>
 
     <!-- Remote Services messages-->
     <string name="remote_services_request_error_get_recipes">"Recipes couldn't be loaded."</string>

@@ -180,7 +180,7 @@ public class StepFragment extends Fragment {
             @Override
             public void onVisibilityChange(int visibility) {
                 if(mCallback != null) {
-                    mCallback.onPlayerControlesVisibilityChanged(visibility != View.VISIBLE);
+                    mCallback.onPlayerControlesVisibilityChanged(visibility == View.VISIBLE);
                 }
             }
         });
@@ -206,7 +206,7 @@ public class StepFragment extends Fragment {
         super.onResume();
         mSimpleExoPlayerView.showController();
         if(mCallback != null){
-            mCallback.onPlayerControlesVisibilityChanged(false);
+            mCallback.onPlayerControlesVisibilityChanged(true);
         }
     }
 

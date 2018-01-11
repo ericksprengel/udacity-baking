@@ -8,4 +8,4 @@
     app:layoutManager="LinearLayoutManager"
     android:padding="16dp"
     tools:context="br.com.ericksprengel.android.baking.ui.recipe.StepFragment"
-    tools:listitem="@layout/activity_recipe_ingredients_item" />
+    tools:listitem="@layout/fragment_recipe_ingredients_item" />

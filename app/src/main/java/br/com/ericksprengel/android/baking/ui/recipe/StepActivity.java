@@ -3,11 +3,13 @@ package br.com.ericksprengel.android.baking.ui.recipe;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.constraint.Group;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -35,7 +37,9 @@ public class StepActivity extends BaseActivity implements View.OnClickListener, 
     private ViewPager mViewPager;
     private FloatingActionButton mNavLeft;
     private FloatingActionButton mNavRight;
-    private Group mNavControlsGroup;
+
+    private int mCurrentItem = 0;
+    private boolean mIsShowingControls = true;
 
     public static Intent getStartIntent(Context context, Step step) {
         Intent intent = new Intent(context, StepActivity.class);
@@ -73,8 +77,8 @@ public class StepActivity extends BaseActivity implements View.OnClickListener, 
 
             @Override
             public void onPageSelected(int position) {
-                mNavLeft.setVisibility(position == 0 ?                  View.GONE : View.VISIBLE);
-                mNavRight.setVisibility(position == mSteps.size() - 1 ? View.GONE : View.VISIBLE);
+                mCurrentItem = position;
+                updateNavControls();
                 getSupportActionBar().setTitle(mSteps.get(position).getShortDescription());
             }
 
@@ -83,13 +87,51 @@ public class StepActivity extends BaseActivity implements View.OnClickListener, 
 
             }
         });
+        mViewPager.setPageTransformer(true, new ViewPager.PageTransformer() {
+            private static final float MIN_SCALE = 0.85f;
+            private static final float MIN_ALPHA = 0.5f;
+
+            @Override
+            public void transformPage(@NonNull View page, float position) {
+                int pageWidth = page.getWidth();
+                int pageHeight = page.getHeight();
+
+                View view = page; //page.findViewById(R.id.step_frag_description_textview);
+
+                if (position < -1) { // [-Infinity,-1)
+                    // This page is way off-screen to the left.
+                    view.setAlpha(0);
+
+                } else if (position <= 1) { // [-1,1]
+                    // Modify the default slide transition to shrink the page as well
+                    float scaleFactor = Math.max(MIN_SCALE, 1 - Math.abs(position));
+                    float vertMargin = pageHeight * (1 - scaleFactor) / 2;
+                    float horzMargin = pageWidth * (1 - scaleFactor) / 2;
+                    if (position < 0) {
+                        view.setTranslationX(horzMargin - vertMargin / 2);
+                    } else {
+                        view.setTranslationX(-horzMargin + vertMargin / 2);
+                    }
+
+                    // Scale the page down (between MIN_SCALE and 1)
+                    view.setScaleX(scaleFactor);
+                    view.setScaleY(scaleFactor);
+
+                    // Fade the page relative to its size.
+                    view.setAlpha(MIN_ALPHA +
+                            (scaleFactor - MIN_SCALE) /
+                                    (1 - MIN_SCALE) * (1 - MIN_ALPHA));
+                } else { // (1,+Infinity]
+                    // This page is way off-screen to the right.
+                    view.setAlpha(0);
+                }
+            }
+        });
 
         mNavLeft = findViewById(R.id.step_ac_nav_left);
         mNavRight = findViewById(R.id.step_ac_nav_right);
         mNavLeft.setOnClickListener(this);
         mNavRight.setOnClickListener(this);
-
-        mNavControlsGroup = findViewById(R.id.step_ac_nav_controls_group);
 
         loadSteps();
     }
@@ -103,12 +145,12 @@ public class StepActivity extends BaseActivity implements View.OnClickListener, 
                 for(int position = 0; position < mSteps.size(); position++) {
                     Step step = mSteps.get(position);
                     if(step.getId() == mStepId) {
-                        mViewPager.setCurrentItem(position, true);
+                        mCurrentItem = position;
+                        mViewPager.setCurrentItem(mCurrentItem, true);
 
                         // It's just to update the ui for the first item.
                         // the ViewPager.OnPageChangeListener is not called for the first step.
-                        mNavLeft.setVisibility(position == 0 ?                  View.GONE : View.VISIBLE);
-                        mNavRight.setVisibility(position == mSteps.size() - 1 ? View.GONE : View.VISIBLE);
+                        updateNavControls();
                         getSupportActionBar().setTitle(mSteps.get(position).getShortDescription());
                     }
                 }
@@ -168,11 +210,24 @@ public class StepActivity extends BaseActivity implements View.OnClickListener, 
     }
 
     @Override
-    public void onPlayerControlesVisibilityChanged(boolean isFullscreen) {
+    public void onPlayerControlesVisibilityChanged(boolean isShowingControls) {
         if(!getResources().getBoolean(R.bool.step_ac_fullscreen)) {
             return;
         }
 
-        mNavControlsGroup.setVisibility(isFullscreen ? View.GONE : View.VISIBLE);
+        mIsShowingControls = isShowingControls;
+        updateNavControls();
+    }
+
+    private void updateNavControls() {
+        if(!mIsShowingControls) {
+            mNavLeft.setVisibility(View.GONE);
+            mNavRight.setVisibility(View.GONE);
+        } else {
+            mNavLeft.setVisibility(mCurrentItem == 0 ?                  View.GONE : View.VISIBLE);
+            mNavRight.setVisibility(mCurrentItem == mSteps.size() - 1 ? View.GONE : View.VISIBLE);
+            Log.e("SPRENGEL", "Gone? mCurrentItem == 0 : " + (mCurrentItem == 0));
+        }
+        Log.e("SPRENGEL", "uped");
     }
 }
