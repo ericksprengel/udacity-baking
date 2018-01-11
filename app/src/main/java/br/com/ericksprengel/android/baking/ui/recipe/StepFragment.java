@@ -88,7 +88,6 @@ public class StepFragment extends Fragment {
             @Override
             public void onStepLoaded(Step step) {
                 mStep = step;
-                ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(mStep.getShortDescription());
                 mDescription.setText(mStep.getDescription());
                 if(!TextUtils.isEmpty(mStep.getThumbnailURL())) {
                     Picasso.with(getContext())
