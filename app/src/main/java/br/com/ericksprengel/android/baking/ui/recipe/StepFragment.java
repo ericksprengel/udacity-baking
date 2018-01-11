@@ -205,7 +205,9 @@ public class StepFragment extends Fragment {
     public void onResume() {
         super.onResume();
         mSimpleExoPlayerView.showController();
-        mCallback.onPlayerControlesVisibilityChanged(false);
+        if(mCallback != null){
+            mCallback.onPlayerControlesVisibilityChanged(false);
+        }
     }
 
     @Override
