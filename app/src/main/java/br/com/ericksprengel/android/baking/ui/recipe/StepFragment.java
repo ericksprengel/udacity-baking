@@ -118,12 +118,7 @@ public class StepFragment extends Fragment {
                             .load(mStep.getThumbnailURL())
                             .into(mThumbnailTarget);
                 }
-                if (!TextUtils.isEmpty(mStep.getVideoURL())) {
-                    mNoVideoMessage.setVisibility(View.GONE);
-                    loadVideo(Uri.parse(mStep.getVideoURL()));
-                } else {
-                    mNoVideoMessage.setVisibility(View.VISIBLE);
-                }
+                loadVideo();
             }
 
             @Override
@@ -148,7 +143,20 @@ public class StepFragment extends Fragment {
         return rootView;
     }
 
-    private void loadVideo(Uri videoUri) {
+    private void loadVideo() {
+        // step not loaded. Nothing to do.
+        if (mStep == null) {
+            return;
+        }
+        // There is no video for this step. Just show a message.
+        if (TextUtils.isEmpty(mStep.getVideoURL())) {
+            mNoVideoMessage.setVisibility(View.VISIBLE);
+            return;
+        }
+
+        mNoVideoMessage.setVisibility(View.GONE);
+
+        Uri videoUri = Uri.parse(mStep.getVideoURL());
         // 1. Create a default TrackSelector
         Handler mainHandler = new Handler();
         BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
@@ -203,8 +211,19 @@ public class StepFragment extends Fragment {
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        if (Util.SDK_INT > 23) {
+            loadVideo();
+        }
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
+        if (Util.SDK_INT <= 23 || mExoPlayer == null) {
+            loadVideo();
+        }
         mSimpleExoPlayerView.showController();
         if (mCallback != null) {
             mCallback.onPlayerControlesVisibilityChanged(true);
@@ -214,17 +233,38 @@ public class StepFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
+        savePlayerState();
+        if (Util.SDK_INT <= 23) {
+            releasePlayer();
+        }
+    }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (Util.SDK_INT > 23) {
+            releasePlayer();
+        }
+    }
+
+    public void releasePlayer() {
         if (mExoPlayer != null) {
-            // Save ExoPlayer state
-            // Store off if we were playing so we know if we should start when we're foregrounded again.
-            mExoPlayerIsPlaying = mExoPlayer.getPlayWhenReady();
-            // Store off the last position our mExoPlayer was in before we paused it.
-            mExoPlayerLastPosition = mExoPlayer.getCurrentPosition();
             // Pause the mExoPlayer
             mExoPlayer.setPlayWhenReady(false);
             mExoPlayer.release();
             mExoPlayer = null;
         }
     }
+
+    private void savePlayerState() {
+        if (mExoPlayer == null) {
+            return;
+        }
+        // Save ExoPlayer state
+        // Store off if we were playing so we know if we should start when we're foregrounded again.
+        mExoPlayerIsPlaying = mExoPlayer.getPlayWhenReady();
+        // Store off the last position our mExoPlayer was in before we paused it.
+        mExoPlayerLastPosition = mExoPlayer.getCurrentPosition();
+    }
+
 }
