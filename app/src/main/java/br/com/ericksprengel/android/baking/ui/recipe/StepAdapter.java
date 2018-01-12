@@ -15,7 +15,6 @@ import br.com.ericksprengel.android.baking.data.Step;
 public class StepAdapter extends RecyclerView.Adapter<StepAdapter.ViewHolder> {
 
 
-
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         Step mStep;
 

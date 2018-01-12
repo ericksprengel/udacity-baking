@@ -6,12 +6,6 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.widget.RemoteViewsService;
 
-import java.util.List;
-
-import br.com.ericksprengel.android.baking.data.Ingredient;
-import br.com.ericksprengel.android.baking.data.source.RecipesRepository;
-import br.com.ericksprengel.android.baking.util.Inject;
-
 /**
  * Created by erick.sprengel on 08/01/2018.
  */

@@ -1,10 +1,14 @@
 package br.com.ericksprengel.android.baking.ui.recipes;
 
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -24,11 +28,13 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.ViewHold
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         Recipe mRecipe;
+        final ImageView mImage;
         final TextView mName;
         final TextView mServings;
 
         ViewHolder(View v) {
             super(v);
+            mImage = v.findViewById(R.id.recipes_ac_image_imageview);
             mName = v.findViewById(R.id.recipes_ac_name_textview);
             mServings = v.findViewById(R.id.recipes_ac_servings_textview);
             v.setOnClickListener(this);
@@ -36,6 +42,12 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.ViewHold
 
         void updateData(Recipe recipe) {
             mRecipe = recipe;
+            if(!TextUtils.isEmpty(mRecipe.getImage())) {
+                Picasso.with(mImage.getContext())
+                        .load(recipe.getImage())
+                        .placeholder(R.drawable.placeholder_rev)
+                        .into(mImage);
+            }
             mName.setText(mRecipe.getName());
             mServings.setText(mServings.getContext().getString(R.string.recipes_ac_servings, mRecipe.getServings()));
         }

@@ -8,7 +8,7 @@
         android:id="@+id/recipe_wd_ingredient_item_quantity_textview"
         android:layout_width="60dp"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
+        android:layout_margin="@dimen/margin_medium"
         tools:text="1 CUP"
         android:textSize="14sp"
         android:textStyle="bold"
@@ -17,7 +17,7 @@
         android:id="@+id/recipe_wd_ingredient_item_ingredient_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
+        android:layout_margin="@dimen/margin_medium"
         tools:text="Sugar"
         android:textSize="14sp"
         android:textColor="@android:color/primary_text_light" />

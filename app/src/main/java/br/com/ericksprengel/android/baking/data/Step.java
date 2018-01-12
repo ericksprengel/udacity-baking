@@ -8,11 +8,11 @@ import com.google.gson.annotations.SerializedName;
 @Entity(tableName = "steps",
         primaryKeys = {"id", "recipeId"},
         foreignKeys = {
-            @ForeignKey(
-                entity = Recipe.class,
-                parentColumns = "id",
-                childColumns = "recipeId",
-                onDelete = ForeignKey.CASCADE)
+                @ForeignKey(
+                        entity = Recipe.class,
+                        parentColumns = "id",
+                        childColumns = "recipeId",
+                        onDelete = ForeignKey.CASCADE)
         })
 public class Step {
 

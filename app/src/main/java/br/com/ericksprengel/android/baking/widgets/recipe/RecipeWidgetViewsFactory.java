@@ -1,11 +1,7 @@
 package br.com.ericksprengel.android.baking.widgets.recipe;
 
-import android.appwidget.AppWidgetManager;
 import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
 import android.widget.RemoteViews;
-import android.widget.RemoteViewsService;
 
 import java.util.List;
 
@@ -14,9 +10,6 @@ import br.com.ericksprengel.android.baking.data.Ingredient;
 import br.com.ericksprengel.android.baking.data.source.RecipesRepository;
 import br.com.ericksprengel.android.baking.util.Inject;
 
-/**
- * Created by erick.sprengel on 08/01/2018.
- */
 
 public class RecipeWidgetViewsFactory implements RecipeWidgetService.RemoteViewsFactory {
 
@@ -27,7 +20,7 @@ public class RecipeWidgetViewsFactory implements RecipeWidgetService.RemoteViews
 
     public RecipeWidgetViewsFactory(Context context, int appWidgetId, int recipeId) {
         mContext = context;
-        mAppWidgetId= appWidgetId;
+        mAppWidgetId = appWidgetId;
         mRecipeId = recipeId;
     }
 
@@ -60,7 +53,7 @@ public class RecipeWidgetViewsFactory implements RecipeWidgetService.RemoteViews
         Ingredient ingredient = mIngredients.get(position);
         row.setTextViewText(R.id.recipe_wd_ingredient_item_quantity_textview, ingredient.getFormattedQuantity());
         row.setTextViewText(R.id.recipe_wd_ingredient_item_ingredient_textview, ingredient.getIngredient());
-        return(row);
+        return (row);
     }
 
     @Override

@@ -82,15 +82,15 @@ public class Recipe {
     }
 
     @Override
-     public String toString(){
-        return 
-            "Recipe{" +
-            "image = '" + image + '\'' + 
-            ",servings = '" + servings + '\'' + 
-            ",name = '" + name + '\'' + 
-            ",ingredients = '" + ingredients + '\'' + 
-            ",id = '" + id + '\'' + 
-            ",steps = '" + steps + '\'' + 
-            "}";
-        }
+    public String toString() {
+        return
+                "Recipe{" +
+                        "image = '" + image + '\'' +
+                        ",servings = '" + servings + '\'' +
+                        ",name = '" + name + '\'' +
+                        ",ingredients = '" + ingredients + '\'' +
+                        ",id = '" + id + '\'' +
+                        ",steps = '" + steps + '\'' +
+                        "}";
+    }
 }

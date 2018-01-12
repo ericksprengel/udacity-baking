@@ -4,14 +4,12 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
-import android.support.annotation.NonNull;
 import android.widget.RemoteViews;
 
 import br.com.ericksprengel.android.baking.R;
 import br.com.ericksprengel.android.baking.data.Recipe;
 import br.com.ericksprengel.android.baking.data.source.RecipesDataSource;
 import br.com.ericksprengel.android.baking.data.source.RecipesRepository;
-import br.com.ericksprengel.android.baking.ui.recipes.RecipesActivity;
 import br.com.ericksprengel.android.baking.util.Inject;
 
 /**

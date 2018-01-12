@@ -97,7 +97,6 @@ public class RecipeWidgetConfigureActivity extends BaseActivity implements Recip
     }
 
 
-
     public void loadRecipes() {
         boolean cached = mRecipesRepository.getRecipes(new RecipesDataSource.LoadRecipesCallback() {
             @Override
@@ -111,7 +110,7 @@ public class RecipeWidgetConfigureActivity extends BaseActivity implements Recip
                 showError(String.format("(%d) %s", errorCode, errorMessage));
             }
         });
-        if(!cached) {
+        if (!cached) {
             showLoading("Loading...");
         }
     }

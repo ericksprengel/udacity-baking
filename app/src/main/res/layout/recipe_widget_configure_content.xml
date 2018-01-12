@@ -9,7 +9,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="@dimen/margin_medium"
         android:text="@string/recipe_widget_configure_ac_configure_label" />
 
     <android.support.v7.widget.RecyclerView

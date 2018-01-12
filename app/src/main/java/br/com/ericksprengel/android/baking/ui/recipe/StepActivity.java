@@ -140,9 +140,9 @@ public class StepActivity extends BaseActivity implements View.OnClickListener, 
             public void onStepsLoaded(List<Step> steps) {
                 mSteps = steps;
                 mStepPagerAdapter.setSteps(mSteps);
-                for(int position = 0; position < mSteps.size(); position++) {
+                for (int position = 0; position < mSteps.size(); position++) {
                     Step step = mSteps.get(position);
-                    if(step.getId() == mStepId) {
+                    if (step.getId() == mStepId) {
                         mCurrentItem = position;
                         mViewPager.setCurrentItem(mCurrentItem, true);
 
@@ -194,7 +194,7 @@ public class StepActivity extends BaseActivity implements View.OnClickListener, 
         // Trigger the initial hide() shortly after the activity has been
         // created, to briefly hint to the user that UI controls
         // are available.
-        if(getResources().getBoolean(R.bool.step_ac_fullscreen)) {
+        if (getResources().getBoolean(R.bool.step_ac_fullscreen)) {
             // Note that some of these constants are new as of API 16 (Jelly Bean)
             // and API 19 (KitKat). It is safe to use them, as they are inlined
             // at compile-time and do nothing on earlier devices.
@@ -209,7 +209,7 @@ public class StepActivity extends BaseActivity implements View.OnClickListener, 
 
     @Override
     public void onPlayerControlesVisibilityChanged(boolean isShowingControls) {
-        if(!getResources().getBoolean(R.bool.step_ac_fullscreen)) {
+        if (!getResources().getBoolean(R.bool.step_ac_fullscreen)) {
             return;
         }
 
@@ -218,11 +218,11 @@ public class StepActivity extends BaseActivity implements View.OnClickListener, 
     }
 
     private void updateNavControls() {
-        if(!mIsShowingControls) {
+        if (!mIsShowingControls) {
             mNavLeft.setVisibility(View.GONE);
             mNavRight.setVisibility(View.GONE);
         } else {
-            mNavLeft.setVisibility(mCurrentItem == 0 ?                  View.GONE : View.VISIBLE);
+            mNavLeft.setVisibility(mCurrentItem == 0 ? View.GONE : View.VISIBLE);
             mNavRight.setVisibility(mCurrentItem == mSteps.size() - 1 ? View.GONE : View.VISIBLE);
         }
     }

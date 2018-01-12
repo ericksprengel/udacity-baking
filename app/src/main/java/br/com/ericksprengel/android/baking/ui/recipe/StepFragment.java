@@ -73,7 +73,8 @@ public class StepFragment extends Fragment {
         }
     };
 
-    public StepFragment() {}
+    public StepFragment() {
+    }
 
     public static StepFragment newInstance(int recipeId, int stepId) {
         StepFragment fragment = new StepFragment();
@@ -90,7 +91,7 @@ public class StepFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if(savedInstanceState != null) {
+        if (savedInstanceState != null) {
             mExoPlayerIsPlaying = savedInstanceState.getBoolean(STATE_EXO_PLAYER_IS_PLAYING);
             mExoPlayerLastPosition = savedInstanceState.getLong(STATE_EXO_PLAYER_LAST_POSITION);
         }
@@ -109,15 +110,15 @@ public class StepFragment extends Fragment {
             @Override
             public void onStepLoaded(Step step) {
                 mStep = step;
-                if(mDescription != null) {
+                if (mDescription != null) {
                     mDescription.setText(mStep.getDescription());
                 }
-                if(!TextUtils.isEmpty(mStep.getThumbnailURL())) {
+                if (!TextUtils.isEmpty(mStep.getThumbnailURL())) {
                     Picasso.with(getContext())
                             .load(mStep.getThumbnailURL())
                             .into(mThumbnailTarget);
                 }
-                if(!TextUtils.isEmpty(mStep.getVideoURL())) {
+                if (!TextUtils.isEmpty(mStep.getVideoURL())) {
                     mNoVideoMessage.setVisibility(View.GONE);
                     loadVideo(Uri.parse(mStep.getVideoURL()));
                 } else {
@@ -179,7 +180,7 @@ public class StepFragment extends Fragment {
         mSimpleExoPlayerView.setControllerVisibilityListener(new PlaybackControlView.VisibilityListener() {
             @Override
             public void onVisibilityChange(int visibility) {
-                if(mCallback != null) {
+                if (mCallback != null) {
                     mCallback.onPlayerControlesVisibilityChanged(visibility == View.VISIBLE);
                 }
             }
@@ -196,7 +197,7 @@ public class StepFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnPlayerControlsVisibilityChangeListener){
+        if (context instanceof OnPlayerControlsVisibilityChangeListener) {
             mCallback = (OnPlayerControlsVisibilityChangeListener) context;
         }
     }
@@ -205,7 +206,7 @@ public class StepFragment extends Fragment {
     public void onResume() {
         super.onResume();
         mSimpleExoPlayerView.showController();
-        if(mCallback != null){
+        if (mCallback != null) {
             mCallback.onPlayerControlesVisibilityChanged(true);
         }
     }
@@ -214,7 +215,7 @@ public class StepFragment extends Fragment {
     public void onPause() {
         super.onPause();
 
-        if(mExoPlayer != null) {
+        if (mExoPlayer != null) {
             // Save ExoPlayer state
             // Store off if we were playing so we know if we should start when we're foregrounded again.
             mExoPlayerIsPlaying = mExoPlayer.getPlayWhenReady();

@@ -25,7 +25,8 @@ public class IngredientsFragment extends Fragment implements IngredientAdapter.O
     public static final String ARG_RECIPE_ID = "recipe_id";
     private IngredientAdapter mAdapter;
 
-    public IngredientsFragment() {}
+    public IngredientsFragment() {
+    }
 
     public static IngredientsFragment newInstance(int recipeId) {
         IngredientsFragment fragment = new IngredientsFragment();
@@ -62,7 +63,6 @@ public class IngredientsFragment extends Fragment implements IngredientAdapter.O
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_recipe_ingredients, container, false);
         int recipeId = getArguments().getInt(ARG_RECIPE_ID);
-
 
 
         RecyclerView recyclerView = rootView.findViewById(R.id.recipe_ac_ingredient_list);

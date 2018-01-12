@@ -34,7 +34,9 @@ public abstract class BakingDatabase extends RoomDatabase {
     private static BakingDatabase INSTANCE;
 
     public abstract RecipesDao recipesDao();
+
     public abstract StepsDao stepsDao();
+
     public abstract IngredientsDao ingredientsDao();
 
     private static final Object sLock = new Object();

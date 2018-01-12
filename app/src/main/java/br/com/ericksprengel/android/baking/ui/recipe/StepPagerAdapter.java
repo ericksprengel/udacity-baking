@@ -22,7 +22,6 @@ public class StepPagerAdapter extends FragmentStatePagerAdapter {
     }
 
 
-
     @Override
     public Fragment getItem(int position) {
         Step step = mSteps.get(position);

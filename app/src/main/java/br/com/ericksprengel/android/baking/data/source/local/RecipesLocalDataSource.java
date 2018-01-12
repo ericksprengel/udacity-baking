@@ -131,12 +131,12 @@ public class RecipesLocalDataSource implements RecipesDataSource {
             public void run() {
                 mRecipesDao.insertRecipe(recipe);
                 // recipe id is empty if it comes from remote.
-                for(Step step : recipe.getSteps()) {
+                for (Step step : recipe.getSteps()) {
                     step.setRecipeId(recipe.getId());
                 }
-                for(int i = 0; i < recipe.getIngredients().size(); i++) {
+                for (int i = 0; i < recipe.getIngredients().size(); i++) {
                     Ingredient ingredient = recipe.getIngredients().get(i);
-                    ingredient.setId(i+1);
+                    ingredient.setId(i + 1);
                     ingredient.setRecipeId(recipe.getId());
                 }
                 mStepsDao.insertAll(recipe.getSteps());

@@ -1,6 +1,7 @@
 package br.com.ericksprengel.android.baking.ui.recipes;
 
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -87,7 +88,7 @@ public class RecipesActivity extends BaseActivity implements View.OnClickListene
 
     @Override
     public void onRecipeClick(Recipe recipe) {
-        Toast.makeText(this, recipe.getName(), Toast.LENGTH_LONG).show();
+        Snackbar.make(mSwipeRefreshLayout, recipe.getName(), Snackbar.LENGTH_SHORT).show();
         startActivity(RecipeActivity.getStartIntent(this, recipe));
     }
 

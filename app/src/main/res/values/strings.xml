@@ -9,7 +9,7 @@
     <string name="internal_error">"Sorry. Something goes wrong."</string>
 
     <!-- Recipes Widget -->
-    <string name="appwidget_text">EXAMPLE</string>
+    <string name="appwidget_text">Recipe</string>
     <string name="recipe_widget_configure_ac_configure_label">Please choose a recipe:</string>
 
     <!-- Remote Services messages-->

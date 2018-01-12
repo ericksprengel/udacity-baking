@@ -62,9 +62,9 @@ public class RecipesRemoteDataSource implements RecipesDataSource {
         call.enqueue(new Callback<List<Recipe>>() {
             @Override
             public void onResponse(@NonNull Call<List<Recipe>> call, @NonNull Response<List<Recipe>> response) {
-                if(response.isSuccessful()) {
+                if (response.isSuccessful()) {
                     List<Recipe> recipes = (List<Recipe>) response.body();
-                    if(recipes == null) {
+                    if (recipes == null) {
                         callback.onDataNotAvailable(ERROR_CODE_DEFAULT,
                                 mResources.getString(R.string.remote_services_request_error_get_recipes));
                         return;

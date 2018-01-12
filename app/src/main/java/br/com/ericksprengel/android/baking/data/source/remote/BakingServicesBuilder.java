@@ -36,7 +36,7 @@ public class BakingServicesBuilder {
     }
 
     public static BakingServices build(Context context) {
-        if(mRetrofit == null) {
+        if (mRetrofit == null) {
             initRetrofit(context);
         }
         return mRetrofit.create(BakingServices.class);
