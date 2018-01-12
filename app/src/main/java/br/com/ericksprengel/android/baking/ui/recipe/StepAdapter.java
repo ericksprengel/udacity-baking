@@ -11,9 +11,6 @@ import java.util.List;
 import br.com.ericksprengel.android.baking.R;
 import br.com.ericksprengel.android.baking.data.Step;
 
-/**
- * Created by erick.sprengel on 04/01/2018.
- */
 
 public class StepAdapter extends RecyclerView.Adapter<StepAdapter.ViewHolder> {
 

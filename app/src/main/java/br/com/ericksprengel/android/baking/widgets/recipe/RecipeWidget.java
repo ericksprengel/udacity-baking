@@ -4,6 +4,7 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.widget.RemoteViews;
 
 import br.com.ericksprengel.android.baking.R;
@@ -19,7 +20,7 @@ import br.com.ericksprengel.android.baking.util.Inject;
  */
 public class RecipeWidget extends AppWidgetProvider {
 
-    static void updateAppWidget(Context context, final AppWidgetManager appWidgetManager,
+    static void updateAppWidget(final Context context, final AppWidgetManager appWidgetManager,
                                 final int appWidgetId) {
 
         int recipeId = RecipeWidgetConfigureActivity.loadRecipePref(context, appWidgetId);
@@ -36,14 +37,12 @@ public class RecipeWidget extends AppWidgetProvider {
 
             @Override
             public void onDataNotAvailable() {
-                views.setTextViewText(R.id.recipe_wd_recipe_name_textview, "--//--");
+                views.setTextViewText(R.id.recipe_wd_recipe_name_textview, context.getResources().getString(R.string.not_available_data));
                 appWidgetManager.partiallyUpdateAppWidget(appWidgetId, views);
             }
         });
 
-        Intent intent = new Intent(context, RecipeWidgetService.class);
-        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
-        intent.putExtra("recipe_id", recipeId);
+        Intent intent = RecipeWidgetService.getRemoteAdapterIntent(context, appWidgetId, recipeId);
         views.setRemoteAdapter(R.id.recipe_wd_ingredients_listview, intent);
 
 

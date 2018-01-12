@@ -19,12 +19,12 @@ public class BakingServicesBuilder {
 
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
 
-        httpClient.addInterceptor(new ChuckInterceptor(context))
-                .build();
 
         if (BuildConfig.DEBUG) {
             // add stetho interceptor. See: chrome://inspect/#devices
             httpClient.addNetworkInterceptor(new StethoInterceptor());
+            httpClient.addInterceptor(new ChuckInterceptor(context))
+                    .build();
         }
 
         mRetrofit = new Retrofit.Builder()

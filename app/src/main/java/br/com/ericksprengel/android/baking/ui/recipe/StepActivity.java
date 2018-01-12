@@ -4,12 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.constraint.Group;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -226,8 +224,6 @@ public class StepActivity extends BaseActivity implements View.OnClickListener, 
         } else {
             mNavLeft.setVisibility(mCurrentItem == 0 ?                  View.GONE : View.VISIBLE);
             mNavRight.setVisibility(mCurrentItem == mSteps.size() - 1 ? View.GONE : View.VISIBLE);
-            Log.e("SPRENGEL", "Gone? mCurrentItem == 0 : " + (mCurrentItem == 0));
         }
-        Log.e("SPRENGEL", "uped");
     }
 }
