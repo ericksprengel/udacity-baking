@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -228,6 +229,16 @@ public class StepFragment extends Fragment {
         if (mCallback != null) {
             mCallback.onPlayerControlesVisibilityChanged(true);
         }
+    }
+
+    /**
+     * This method is only used by viewpager because the viewpager doesn't call onPause after
+     * changing the fragment
+     */
+    public void losingVisibility() {
+        String desc = mStep != null ? mStep.getShortDescription() : "mStep == null";
+        Log.e("SPRENGEL", String.format("losingVisibility: %s", desc));
+        releasePlayer();
     }
 
     @Override

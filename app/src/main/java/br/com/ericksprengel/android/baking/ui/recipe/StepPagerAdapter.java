@@ -1,6 +1,5 @@
 package br.com.ericksprengel.android.baking.ui.recipe;
 
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
@@ -23,7 +22,7 @@ public class StepPagerAdapter extends FragmentStatePagerAdapter {
 
 
     @Override
-    public Fragment getItem(int position) {
+    public StepFragment getItem(int position) {
         Step step = mSteps.get(position);
         return StepFragment.newInstance(step.getRecipeId(), step.getId());
     }

@@ -8,6 +8,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -70,11 +71,14 @@ public class StepActivity extends BaseActivity implements View.OnClickListener, 
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
+                Log.e("SPRENGEL", "onPageScrolled(int "+position+", float "+positionOffset+", int "+positionOffsetPixels+")");
             }
 
             @Override
             public void onPageSelected(int position) {
+                Log.e("SPRENGEL", "onPageSelected: mCurrentItem " + mCurrentItem);
+                mStepPagerAdapter.getItem(mCurrentItem).losingVisibility();
+                Log.e("SPRENGEL", "onPageSelected" + position);
                 mCurrentItem = position;
                 updateNavControls();
                 getSupportActionBar().setTitle(mSteps.get(position).getShortDescription());
@@ -82,7 +86,7 @@ public class StepActivity extends BaseActivity implements View.OnClickListener, 
 
             @Override
             public void onPageScrollStateChanged(int state) {
-
+                Log.e("SPRENGEL", "onPageScrollStateChanged" + state);
             }
         });
         mViewPager.setPageTransformer(true, new ViewPager.PageTransformer() {
