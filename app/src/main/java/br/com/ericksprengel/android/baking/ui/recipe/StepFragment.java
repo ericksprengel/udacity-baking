@@ -35,6 +35,7 @@ import com.google.android.exoplayer2.util.Util;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
+import br.com.ericksprengel.android.baking.BuildConfig;
 import br.com.ericksprengel.android.baking.R;
 import br.com.ericksprengel.android.baking.data.Step;
 import br.com.ericksprengel.android.baking.data.source.RecipesDataSource;
@@ -176,7 +177,7 @@ public class StepFragment extends Fragment {
 
         // Produces DataSource instances through which media data is loaded.
         DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(getContext(),
-                Util.getUserAgent(getContext(), "yourApplicationName"), null);
+                Util.getUserAgent(getContext(), BuildConfig.APPLICATION_ID), null);
         // This is the MediaSource representing the media to be played.
         MediaSource videoSource = new ExtractorMediaSource.Factory(dataSourceFactory)
                 .createMediaSource(videoUri);
@@ -184,7 +185,9 @@ public class StepFragment extends Fragment {
         mExoPlayer.prepare(videoSource);
 
         // Retrieve last state
-        mExoPlayer.setPlayWhenReady(mExoPlayerIsPlaying);
+        if (mCallback == null || mCallback.isStepSelected(mStep.getId())) {
+            mExoPlayer.setPlayWhenReady(mExoPlayerIsPlaying);
+        }
         mExoPlayer.seekTo(mExoPlayerLastPosition);
         mSimpleExoPlayerView.setControllerVisibilityListener(new PlaybackControlView.VisibilityListener() {
             @Override
@@ -201,6 +204,9 @@ public class StepFragment extends Fragment {
     // Container Activity must implement this interface
     public interface OnPlayerControlsVisibilityChangeListener {
         void onPlayerControlesVisibilityChanged(boolean isFullscreen);
+
+        boolean isStepSelected(int stepId);
+
     }
 
     @Override
@@ -236,9 +242,16 @@ public class StepFragment extends Fragment {
      * changing the fragment
      */
     public void losingVisibility() {
-        String desc = mStep != null ? mStep.getShortDescription() : "mStep == null";
-        Log.e("SPRENGEL", String.format("losingVisibility: %s", desc));
+        savePlayerState();
         releasePlayer();
+    }
+
+    /**
+     * This method is only used by viewpager because the viewpager doesn't call onPause after
+     * changing the fragment
+     */
+    public void gainVisibility() {
+        loadVideo();
     }
 
     @Override
@@ -264,6 +277,7 @@ public class StepFragment extends Fragment {
             mExoPlayer.setPlayWhenReady(false);
             mExoPlayer.release();
             mExoPlayer = null;
+            mSimpleExoPlayerView.setPlayer(null);
         }
     }
 

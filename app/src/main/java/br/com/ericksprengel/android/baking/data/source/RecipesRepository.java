@@ -279,7 +279,7 @@ public class RecipesRepository implements RecipesDataSource {
     }
 
     @Override
-    public void getStep(final int recipeId, int stepId, @NonNull final LoadStepCallback callback) {
+    public void getStep(final int recipeId, final int stepId, @NonNull final LoadStepCallback callback) {
         Step cachedStep = getStepWithRecipeIdAndStepId(recipeId, stepId);
 
         // Respond immediately with cache if available
@@ -303,7 +303,7 @@ public class RecipesRepository implements RecipesDataSource {
                     recipeSteps = new LinkedHashMap<>();
                     mCachedSteps.put(recipeId, recipeSteps);
                 }
-                recipeSteps.put(recipeId, step);
+                recipeSteps.put(stepId, step);
 
                 callback.onStepLoaded(step);
             }

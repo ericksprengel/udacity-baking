@@ -1,7 +1,10 @@
 package br.com.ericksprengel.android.baking.ui.recipe;
 
+import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.util.SparseArray;
+import android.view.ViewGroup;
 
 import java.util.List;
 
@@ -9,6 +12,7 @@ import br.com.ericksprengel.android.baking.data.Step;
 
 public class StepPagerAdapter extends FragmentStatePagerAdapter {
 
+    private SparseArray<StepFragment> mFragmentsHolded = new SparseArray<>();
     private List<Step> mSteps;
 
     StepPagerAdapter(FragmentManager fragmentManager) {
@@ -20,6 +24,25 @@ public class StepPagerAdapter extends FragmentStatePagerAdapter {
         notifyDataSetChanged();
     }
 
+    @NonNull
+    @Override
+    public Object instantiateItem(ViewGroup container, int position) {
+        Object fragment = super.instantiateItem(container, position);
+        if(fragment instanceof StepFragment) {
+            mFragmentsHolded.append(position, (StepFragment) fragment);
+        }
+        return fragment;
+    }
+
+    @Override
+    public void destroyItem(ViewGroup container, int position, Object object) {
+        mFragmentsHolded.delete(position);
+        super.destroyItem(container, position, object);
+    }
+
+    public StepFragment getCachedItem(int position) {
+        return mFragmentsHolded.get(position, null);
+    }
 
     @Override
     public StepFragment getItem(int position) {
